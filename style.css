@@ -13,7 +13,7 @@
   --rule:         #E3E2DD;
   --surface:      #F4F3F0;
 
-  --gutter:       1.25rem;
+  --gutter:       clamp(1.5rem, 5vw, 3.5rem);
   --section-gap:  4rem;
 
   --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -714,10 +714,6 @@ hr {
    ============================================================ */
 @media (min-width: 640px) {
 
-  :root {
-    --gutter: 2rem;
-  }
-
   /* Hero */
   .hero__title {
     font-size: var(--text-4xl);
@@ -777,7 +773,6 @@ hr {
 @media (min-width: 960px) {
 
   :root {
-    --gutter: 3.5rem;
     --section-gap: 6rem;
   }
 
