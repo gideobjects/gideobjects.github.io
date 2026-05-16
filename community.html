@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community — GIDE</title>
+  <meta name="description" content="Setups, remixes, and conversations from the people building with GIDE. Submit your own." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="index.html" class="site-header__logo" aria-label="GIDE — Home">
+        <img src="img/gide-logo.png" alt="GIDE" height="22"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <span class="site-header__logo-text" style="display:none;">GIDE</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul class="site-nav__list">
+          <li><a href="objects.html"   class="site-nav__link">Objects</a></li>
+          <li><a href="tools.html"     class="site-nav__link">Tools</a></li>
+          <li><a href="community.html" class="site-nav__link site-nav__link--active">Community</a></li>
+          <li><a href="shop.html"      class="site-nav__link">Shop</a></li>
+          <li><a href="studio.html"    class="site-nav__link">Studio</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container">
+      <header class="community-header">
+        <p class="eyebrow eyebrow--community" style="margin-bottom:.5rem;">GIDE — Community</p>
+        <h1 class="community-header__title">Built alongside.</h1>
+        <p class="community-header__desc">
+          Setups, remixes, questions, and adaptations from the people building
+          with GIDE objects. Show your space. Share your process.
+          The community grows with the studio.
+        </p>
+      </header>
+    </div>
+
+    <!-- Filters -->
+    <div class="container">
+      <div class="community-filters">
+        <button class="filter-btn filter-btn--active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="setup">Setups</button>
+        <button class="filter-btn" data-filter="remix">Remixes</button>
+        <button class="filter-btn" data-filter="question">Questions</button>
+        <button class="filter-btn" data-filter="process">Process</button>
+      </div>
+    </div>
+
+    <!-- Contributions grid -->
+    <div class="container">
+      <div class="contributions-grid" id="contributions-grid">
+
+        <article class="contribution-card" data-type="setup">
+          <p class="contribution-card__type">Setup</p>
+          <h2 class="contribution-card__title">Minimal home office with GIDE Mount</h2>
+          <p class="contribution-card__desc">
+            White wall, walnut desk, single mount at 165 cm. The hook disappears
+            into the wall — which is the point.
+          </p>
+          <div class="contribution-card__author">
+            <div class="contribution-card__avatar">MD</div>
+            <div>
+              <p class="contribution-card__author-name">@minimal.desk</p>
+              <p class="contribution-card__author-meta">3 days ago · Setup</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="contribution-card" data-type="remix">
+          <p class="contribution-card__type">Remix</p>
+          <h2 class="contribution-card__title">Double-arm variant for heavier jackets</h2>
+          <p class="contribution-card__desc">
+            Extended the arm by 40 mm and added a secondary support bracket.
+            Holds a Carhartt Detroit jacket at full weight without deflection.
+          </p>
+          <div class="contribution-card__author">
+            <div class="contribution-card__avatar">WC</div>
+            <div>
+              <p class="contribution-card__author-name">@workshop.co</p>
+              <p class="contribution-card__author-meta">1 week ago · Remix</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="contribution-card" data-type="question">
+          <p class="contribution-card__type">Question</p>
+          <h2 class="contribution-card__title">Best drywall anchor for the mount?</h2>
+          <p class="contribution-card__desc">
+            Mounting into plasterboard — stud isn't in the right position.
+            What anchor rating do I need for a 2 kg jersey load?
+          </p>
+          <div class="contribution-card__author">
+            <div class="contribution-card__avatar">BT</div>
+            <div>
+              <p class="contribution-card__author-name">@buildingthings</p>
+              <p class="contribution-card__author-meta">2 weeks ago · 4 replies</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="contribution-card" data-type="setup">
+          <p class="contribution-card__type">Setup</p>
+          <h2 class="contribution-card__title">Jersey display wall — 6 mounts in a row</h2>
+          <p class="contribution-card__desc">
+            Six mounts at 40 cm spacing across a 2.4 m wall. Mounted into timber
+            noggins, no visible hardware from 3 m distance.
+          </p>
+          <div class="contribution-card__author">
+            <div class="contribution-card__avatar">SH</div>
+            <div>
+              <p class="contribution-card__author-name">@sportshome</p>
+              <p class="contribution-card__author-meta">2 weeks ago · Setup</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="contribution-card" data-type="process">
+          <p class="contribution-card__type">Process</p>
+          <h2 class="contribution-card__title">Painting the mount matte white — guide</h2>
+          <p class="contribution-card__desc">
+            Wanted it to match white walls exactly. Rust-Oleum 2X Flat White, two coats,
+            24-hour dry. Notes on prep and masking below.
+          </p>
+          <div class="contribution-card__author">
+            <div class="contribution-card__avatar">CM</div>
+            <div>
+              <p class="contribution-card__author-name">@clean.minimal</p>
+              <p class="contribution-card__author-meta">3 weeks ago · Process</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="contribution-card" data-type="remix">
+          <p class="contribution-card__type">Remix</p>
+          <h2 class="contribution-card__title">Adapting the mount for a hat rack</h2>
+          <p class="contribution-card__desc">
+            Rotated 90° and added a horizontal bar attachment. Now holds 5 hats across
+            60 cm. Full STL available if anyone wants it.
+          </p>
+          <div class="contribution-card__author">
+            <div class="contribution-card__avatar">PR</div>
+            <div>
+              <p class="contribution-card__author-name">@print.remix</p>
+              <p class="contribution-card__author-meta">1 month ago · Remix</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- Submit CTA -->
+    <div class="container" id="contribute">
+      <div class="contribute-cta">
+        <div>
+          <p class="eyebrow eyebrow--community" style="margin-bottom:.5rem;">Submit a Contribution</p>
+          <h2 class="contribute-cta__heading">Share your build.</h2>
+          <p class="contribute-cta__desc">
+            Show your setup, share a remix, or ask a question. All contributions
+            are reviewed and published within a few days. Include a photo if you have one —
+            it doesn't need to be a professional shot.
+          </p>
+        </div>
+        <div>
+          <div class="contribute-form">
+            <input type="text"     id="f-name"  placeholder="Your name or handle" />
+            <input type="text"     id="f-type"  placeholder="Type — Setup / Remix / Question / Process" />
+            <input type="text"     id="f-title" placeholder="Short title for your contribution" />
+            <textarea id="f-body"  rows="4"     placeholder="Tell us about it. What did you build, change, or figure out?"></textarea>
+            <p style="font-size:var(--txs);color:var(--ink-faint);line-height:1.6;">
+              Have photos? Email them to gideobjects@gmail.com with the same title — we'll combine on publication.
+            </p>
+            <button class="btn" onclick="handleSubmit()">Submit Contribution</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__grid">
+        <div>
+          <p class="site-footer__brand-name">GIDE</p>
+          <p class="site-footer__brand-desc">A design studio making objects and tools with intention.</p>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Objects</p>
+          <ul class="site-footer__links">
+            <li><a href="objects.html">All Objects</a></li>
+            <li><a href="object-001.html">Object 001 — GIDE Mount</a></li>
+            <li><a href="shop.html">Shop on Etsy</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Tools</p>
+          <ul class="site-footer__links">
+            <li><a href="tools.html">All Tools</a></li>
+            <li><a href="worldcup.html">World Cup 2026</a></li>
+            <li><a href="tools.html#intentlink">IntentLink v2</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Studio</p>
+          <ul class="site-footer__links">
+            <li><a href="studio.html">About</a></li>
+            <li><a href="community.html#contribute">Submit</a></li>
+            <li><a href="mailto:gideobjects@gmail.com">gideobjects@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__copy">&copy; 2026 GIDE. All rights reserved.</p>
+        <div class="site-footer__social">
+          <a href="https://instagram.com/gideobjects" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://etsy.com/shop/gideobjects"  target="_blank" rel="noopener">Etsy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Filter
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn--active'));
+        btn.classList.add('filter-btn--active');
+        const f = btn.dataset.filter;
+        document.querySelectorAll('.contribution-card').forEach(card => {
+          card.style.display = (f === 'all' || card.dataset.type === f) ? 'flex' : 'none';
+        });
+      });
+    });
+
+    // Submit — opens mailto
+    function handleSubmit() {
+      const name  = document.getElementById('f-name').value.trim();
+      const type  = document.getElementById('f-type').value.trim();
+      const title = document.getElementById('f-title').value.trim();
+      const body  = document.getElementById('f-body').value.trim();
+      if (!name || !title || !body) { alert('Please fill in your name, a title, and your message.'); return; }
+      const subject = encodeURIComponent('Community submission: ' + title);
+      const text    = encodeURIComponent('Name: ' + name + '\nType: ' + type + '\n\n' + body);
+      window.location.href = 'mailto:gideobjects@gmail.com?subject=' + subject + '&body=' + text;
+    }
+  </script>
+
+</body>
+</html>

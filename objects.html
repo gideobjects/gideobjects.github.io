@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Objects — GIDE</title>
+  <meta name="description" content="A numbered index of physical objects released by GIDE. Designed with engineering clarity." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="index.html" class="site-header__logo" aria-label="GIDE — Home">
+        <img src="img/gide-logo.png" alt="GIDE" height="22"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <span class="site-header__logo-text" style="display:none;">GIDE</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul class="site-nav__list">
+          <li><a href="objects.html"   class="site-nav__link site-nav__link--active">Objects</a></li>
+          <li><a href="tools.html"     class="site-nav__link">Tools</a></li>
+          <li><a href="community.html" class="site-nav__link">Community</a></li>
+          <li><a href="shop.html"      class="site-nav__link">Shop</a></li>
+          <li><a href="studio.html"    class="site-nav__link">Studio</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container">
+      <header class="objects-header">
+        <p class="eyebrow" style="margin-bottom:.5rem;">GIDE — Physical</p>
+        <h1 class="objects-header__title">Objects.</h1>
+        <p class="objects-header__desc">
+          A numbered index of objects released by the studio. Each one documented
+          from first sketch through production — geometry, material, process, and intent.
+        </p>
+      </header>
+    </div>
+
+    <div class="container">
+      <div class="objects-grid">
+
+        <!-- Object 001 — GIDE Mount -->
+        <article class="object-card">
+          <div class="img-slot">
+            <img src="img/001-mount/profile.png" alt="GIDE Mount — Object 001" loading="lazy" />
+          </div>
+          <div class="object-card__body">
+            <p class="object-card__id">Object 001</p>
+            <h2 class="object-card__title">GIDE Mount</h2>
+            <p class="object-card__desc">
+              A wall-mounted display hook engineered for jerseys and everyday hangers.
+              Geometry derived from load requirements. Finish chosen for how it ages,
+              not how it photographs.
+            </p>
+            <div class="object-card__footer">
+              <span class="status-badge status-badge--available">Available</span>
+              <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">
+                <a href="object-001.html" class="text-link">Case Study →</a>
+                <a href="shop.html" class="btn btn--sm">Buy on Etsy</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Object 002 — Placeholder -->
+        <article class="object-card" style="opacity:.5;">
+          <div class="img-slot" style="background:var(--bg-surface);">
+            <span style="font-size:var(--txs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);">In development</span>
+          </div>
+          <div class="object-card__body">
+            <p class="object-card__id">Object 002</p>
+            <h2 class="object-card__title">Undisclosed</h2>
+            <p class="object-card__desc">
+              Under engineering review. Follows the same discipline as Object 001 —
+              form derived from function, material chosen for properties first.
+            </p>
+            <div class="object-card__footer">
+              <span class="status-badge">In Development</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- Design principles strip -->
+    <div class="container">
+      <div style="border-top:1px solid var(--rule);padding-block:2.5rem;display:grid;grid-template-columns:1fr;gap:2rem;">
+        <p class="eyebrow">How objects are made</p>
+        <div style="display:grid;grid-template-columns:1fr;gap:1px;background:var(--rule);">
+          <div style="background:var(--bg);padding:1.25rem;">
+            <p style="font-size:var(--txs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.35rem;">01 — Load First</p>
+            <p style="font-size:var(--tsm);color:var(--ink-muted);line-height:1.65;">Geometry is derived from structural requirements before any aesthetic decisions are made.</p>
+          </div>
+          <div style="background:var(--bg);padding:1.25rem;">
+            <p style="font-size:var(--txs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.35rem;">02 — Material Truth</p>
+            <p style="font-size:var(--tsm);color:var(--ink-muted);line-height:1.65;">No topcoats, no veneers. The surface is the material. Texture and finish are inherent properties.</p>
+          </div>
+          <div style="background:var(--bg);padding:1.25rem;">
+            <p style="font-size:var(--txs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.35rem;">03 — Full Documentation</p>
+            <p style="font-size:var(--tsm);color:var(--ink-muted);line-height:1.65;">Every object ships with a case study — load ratings, material notes, prototype history, and install guidance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__grid">
+        <div>
+          <p class="site-footer__brand-name">GIDE</p>
+          <p class="site-footer__brand-desc">A design studio making objects and tools with intention.</p>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Objects</p>
+          <ul class="site-footer__links">
+            <li><a href="objects.html">All Objects</a></li>
+            <li><a href="object-001.html">Object 001 — GIDE Mount</a></li>
+            <li><a href="shop.html">Shop on Etsy</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Tools</p>
+          <ul class="site-footer__links">
+            <li><a href="tools.html">All Tools</a></li>
+            <li><a href="worldcup.html">World Cup 2026</a></li>
+            <li><a href="tools.html#intentlink">IntentLink v2</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Studio</p>
+          <ul class="site-footer__links">
+            <li><a href="studio.html">About</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="mailto:gideobjects@gmail.com">gideobjects@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__copy">&copy; 2026 GIDE. All rights reserved.</p>
+        <div class="site-footer__social">
+          <a href="https://instagram.com/gideobjects" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://etsy.com/shop/gideobjects"  target="_blank" rel="noopener">Etsy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools — GIDE</title>
+  <meta name="description" content="Digital tools built by GIDE. Minimal, purposeful, free to use." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="index.html" class="site-header__logo" aria-label="GIDE — Home">
+        <img src="img/gide-logo.png" alt="GIDE" height="22"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <span class="site-header__logo-text" style="display:none;">GIDE</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul class="site-nav__list">
+          <li><a href="objects.html"   class="site-nav__link">Objects</a></li>
+          <li><a href="tools.html"     class="site-nav__link site-nav__link--active">Tools</a></li>
+          <li><a href="community.html" class="site-nav__link">Community</a></li>
+          <li><a href="shop.html"      class="site-nav__link">Shop</a></li>
+          <li><a href="studio.html"    class="site-nav__link">Studio</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="container">
+      <header class="tools-header">
+        <p class="eyebrow eyebrow--tools" style="margin-bottom:.5rem;">GIDE — Digital</p>
+        <h1 class="tools-header__title">Tools.</h1>
+        <p class="tools-header__desc">
+          Side projects built in the same spirit as the objects —
+          minimal, purposeful, and documented. Free to use.
+        </p>
+      </header>
+    </div>
+
+    <div class="container">
+      <div class="tools-full-grid">
+
+        <!-- ── Tool 01: World Cup Simulator ── -->
+        <article class="tool-full-card">
+          <div class="tool-full-card__visual">
+            <!--
+              IMAGE PLACEHOLDER — img/tools/worldcup-preview.png
+              Screenshot or stylised preview of the predictor UI.
+              Uncomment once ready:
+              <img src="img/tools/worldcup-preview.png" alt="World Cup 2026 Bracket Simulator" />
+            -->
+            <span style="font-size:var(--txs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);">img/tools/worldcup-preview.png</span>
+          </div>
+          <div class="tool-full-card__body">
+            <p class="tool-full-card__cat">Tool 01 // World Cup 2026</p>
+            <h2 class="tool-full-card__name">Bracket Predictor</h2>
+            <p class="tool-full-card__desc">
+              A minimal bracket simulator for all 48 teams across 12 groups.
+              Tap to pick winners through every round — group stage through the final.
+            </p>
+            <ul class="intent-features">
+              <li>48 teams, 12 groups, full bracket through the final</li>
+              <li>Autofill by odds, reset, and share your bracket</li>
+              <li>Mobile-first, no account needed</li>
+            </ul>
+            <div class="tool-full-card__footer">
+              <span class="tool-full-card__status tool-full-card__status--live">● Live</span>
+              <a href="worldcup.html" class="btn btn--tools">Open Tool</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- ── Tool 02: IntentLink v2 ── -->
+        <article class="tool-full-card" id="intentlink">
+          <div class="tool-full-card__visual">
+            <!--
+              IMAGE PLACEHOLDER — img/tools/intentlink-preview.png
+              See notes below on generating this image.
+              Uncomment once ready:
+              <img src="img/tools/intentlink-preview.png" alt="IntentLink Chrome Extension" />
+            -->
+            <span style="font-size:var(--txs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);">img/tools/intentlink-preview.png</span>
+          </div>
+          <div class="tool-full-card__body">
+            <p class="tool-full-card__cat">Tool 02 // Chrome Extension</p>
+            <h2 class="tool-full-card__name">IntentLink v2</h2>
+            <p class="tool-full-card__desc">
+              Google is a general-purpose engine. IntentLink makes it specific.
+              It reads the intent behind your search — coding, medical, legal, finance —
+              and routes you straight to the authoritative source instead of tutorial farms or ad-heavy results.
+            </p>
+
+            <!-- What's new -->
+            <div style="border-top:1px solid var(--rule);padding-top:1rem;">
+              <p style="font-size:var(--txs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-tools);margin-bottom:.6rem;">What's new in v2</p>
+              <ul class="intent-features">
+                <li>13 intent types (up from 9) — CODING, MEDICAL, LEGAL, FINANCE as first-class intents</li>
+                <li>Coding routes to MDN, Stack Overflow, GitHub, and official language docs</li>
+                <li>Medical routes to Mayo Clinic, NIH, and CDC</li>
+                <li>Legal routes to Cornell Law and Justia</li>
+                <li>Finance routes to Bogleheads and NerdWallet</li>
+                <li>News queries add a date filter + Reuters, AP, BBC</li>
+                <li>Shopping strips AliExpress / Temu and routes to Wirecutter &amp; Reddit</li>
+              </ul>
+            </div>
+
+            <!-- Test queries -->
+            <div style="border-top:1px solid var(--rule);padding-top:1rem;">
+              <p style="font-size:var(--txs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.6rem;">Try these searches</p>
+              <ul class="intent-features" style="font-family:monospace;">
+                <li>react useeffect hook → MDN / Stack Overflow</li>
+                <li>lower back pain → Mayo Clinic / NIH</li>
+                <li>can my landlord enter without notice → Cornell Law</li>
+                <li>best budget keyboard → Wirecutter / Reddit</li>
+                <li>bitcoin news → Reuters / AP + date filter</li>
+              </ul>
+            </div>
+
+            <!-- Install steps -->
+            <div style="border-top:1px solid var(--rule);padding-top:1rem;">
+              <p style="font-size:var(--txs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.6rem;">Install</p>
+              <ol class="install-steps">
+                <li>Download the zip from GitHub and extract it</li>
+                <li>Open <code style="font-size:var(--t2xs);background:var(--bg-surface);padding:.1rem .35rem;">chrome://extensions</code> in Chrome</li>
+                <li>Enable <strong>Developer mode</strong> (top-right toggle)</li>
+                <li>Click <strong>Load unpacked</strong> and select the <code style="font-size:var(--t2xs);background:var(--bg-surface);padding:.1rem .35rem;">intentlink_v2</code> folder</li>
+              </ol>
+            </div>
+
+            <div class="tool-full-card__footer">
+              <span class="tool-full-card__status tool-full-card__status--live">● Live</span>
+              <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+                <a href="https://github.com/gideobjects/intentlink" target="_blank" rel="noopener" class="btn btn--tools">View on GitHub</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- Suggest a tool -->
+    <div class="container">
+      <div style="border-top:1px solid var(--rule);padding-block:2.5rem;display:grid;grid-template-columns:1fr;gap:1.5rem;">
+        <div>
+          <p class="eyebrow" style="margin-bottom:.5rem;">Suggest a Tool</p>
+          <p style="font-size:var(--tbase);color:var(--ink-muted);max-width:52ch;line-height:1.7;">
+            Have an idea for something useful? Tools at GIDE start with a genuine need — from the studio or from the community.
+          </p>
+        </div>
+        <div>
+          <a href="mailto:gideobjects@gmail.com?subject=Tool suggestion" class="btn">Suggest a Tool</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__grid">
+        <div>
+          <p class="site-footer__brand-name">GIDE</p>
+          <p class="site-footer__brand-desc">A design studio making objects and tools with intention.</p>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Objects</p>
+          <ul class="site-footer__links">
+            <li><a href="objects.html">All Objects</a></li>
+            <li><a href="object-001.html">Object 001</a></li>
+            <li><a href="shop.html">Shop on Etsy</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Tools</p>
+          <ul class="site-footer__links">
+            <li><a href="tools.html">All Tools</a></li>
+            <li><a href="worldcup.html">World Cup 2026</a></li>
+            <li><a href="tools.html#intentlink">IntentLink v2</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Studio</p>
+          <ul class="site-footer__links">
+            <li><a href="studio.html">About</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="mailto:gideobjects@gmail.com">gideobjects@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__copy">&copy; 2026 GIDE. All rights reserved.</p>
+        <div class="site-footer__social">
+          <a href="https://instagram.com/gideobjects" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://etsy.com/shop/gideobjects"  target="_blank" rel="noopener">Etsy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

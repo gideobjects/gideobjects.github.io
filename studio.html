@@ -3,191 +3,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Studio — GIDE Objects</title>
-  <meta name="description" content="The history and philosophy of GIDE Objects. Engineering clarity and material honesty." />
+  <title>Studio — GIDE</title>
+  <meta name="description" content="The history and philosophy of GIDE — a design studio at the intersection of engineering and form." />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* ── Studio-page-specific styles ─────────────────────── */
-
-    .studio-hero {
-      padding: var(--section-gap) 0;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .studio-hero__inner {
-      max-width: 800px;
-    }
-
-    .studio-hero__eyebrow {
-      font-size: var(--text-xs);
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 0.75rem;
-    }
-
-    .studio-hero__title {
-      font-size: var(--text-4xl);
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      line-height: 1.1;
-      color: var(--ink);
-      margin-bottom: 1.5rem;
-    }
-
-    .studio-hero__body {
-      font-size: var(--text-lg);
-      color: var(--ink-muted);
-      line-height: 1.75;
-    }
-
-    /* Simple History Section */
-    .history {
-      padding: var(--section-gap) 0;
-      border-bottom: 1px solid var(--rule);
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-
-    .history__label {
-      font-size: var(--text-xs);
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 1.5rem;
-    }
-
-    .history__body {
-      font-size: var(--text-base);
-      color: var(--ink-muted);
-      line-height: 1.75;
-      max-width: 52ch;
-    }
-
-    /* Values Grid */
-    .values {
-      padding: var(--section-gap) 0;
-    }
-
-    .values__label {
-      font-size: var(--text-xs);
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 2rem;
-    }
-
-    .values__grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .values__item-title {
-      font-size: var(--text-base);
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 0.5rem;
-    }
-
-    .values__item-body {
-      font-size: var(--text-sm);
-      color: var(--ink-muted);
-      line-height: 1.7;
-    }
-
-    @media (min-width: 768px) {
-      .values__grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-  </style>
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png" />
 </head>
 <body>
 
   <header class="site-header">
     <div class="container site-header__inner">
-      <a href="index.html" class="site-header__logo">
-        <img src="img/gide-logo.png" alt="GIDE Objects" height="22" />
+      <a href="index.html" class="site-header__logo" aria-label="GIDE — Home">
+        <img src="img/gide-logo.png" alt="GIDE" height="22"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+        <span class="site-header__logo-text" style="display:none;">GIDE</span>
       </a>
-      <nav>
+      <nav aria-label="Main navigation">
         <ul class="site-nav__list">
-          <li><a href="studio.html" class="site-nav__link site-nav__link--active">Studio</a></li>
-          <li><a href="object-001.html" class="site-nav__link">Objects</a></li>
-          <li><a href="shop.html" class="site-nav__link">Shop</a></li>
+          <li><a href="objects.html"   class="site-nav__link">Objects</a></li>
+          <li><a href="tools.html"     class="site-nav__link">Tools</a></li>
+          <li><a href="community.html" class="site-nav__link">Community</a></li>
+          <li><a href="shop.html"      class="site-nav__link">Shop</a></li>
+          <li><a href="studio.html"    class="site-nav__link site-nav__link--active">Studio</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main>
+
+    <!-- ── Hero ── -->
     <section class="studio-hero">
-      <div class="container studio-hero__inner">
-        <p class="studio-hero__eyebrow">Studio</p>
+      <div class="container">
+        <p class="eyebrow" style="margin-bottom:.75rem;">GIDE — Studio</p>
         <h1 class="studio-hero__title">Engineering clarity.<br>Material honesty.</h1>
-        <p class="studio-hero__body">
-          GIDE is an industrial design studio focused on practical, well‑made objects. 
-          The work sits at the intersection of engineering and warm‑minimal form. Each piece is designed to function cleanly, age well, and feel at home in everyday use.
+        <p class="studio-hero__desc">
+          GIDE is an industrial design studio focused on practical, well-made objects.
+          The work sits at the intersection of engineering discipline and warm-minimal form —
+          each piece designed to function cleanly, age well, and feel at home in everyday use.
         </p>
       </div>
     </section>
 
-    <section class="history">
-      <div class="container">
-        <p class="history__label">History</p>
-        <div class="history__body">
-          <p>
-            GIDE was founded in 2025 with a straightforward goal: make useful objects with clear reasoning behind every decision. 
-            The studio’s background in mechanical engineering shapes how each piece is developed, tested, and refined.
+    <!-- ── History ── -->
+    <section class="studio-credentials">
+      <div class="container" style="grid-column:1/-1;display:grid;grid-template-columns:inherit;gap:inherit;">
+        <div>
+          <p class="studio-credentials__label">History</p>
+          <h2 class="studio-credentials__heading">One object at a time.</h2>
+          <p class="studio-credentials__body">
+            GIDE was founded in 2025 with a straightforward goal: make useful objects with
+            clear reasoning behind every decision. A background in mechanical engineering
+            shapes how each piece is developed, tested, and refined.
           </p>
-          <br>
-          <p>
-            The pace is deliberate. We release one object at a time
-             so the work can move through prototyping, tolerance checks, and material evaluation without compromise.
-             By sharing the documentation that guides our process, we hope to give you a deeper understanding of the work
-              and the confidence that comes with it.
+          <p class="studio-credentials__body" style="margin-top:1rem;">
+            The pace is deliberate. Releasing one object at a time allows the work to move
+            through prototyping, tolerance checks, and material evaluation without compromise.
+            Sharing the documentation behind the process gives you confidence in what you're buying.
           </p>
+        </div>
+        <div>
+          <div class="timeline">
+            <div class="timeline__item">
+              <span class="timeline__year">2025</span>
+              <p class="timeline__text"><strong>GIDE founded.</strong> Studio established with a focus on industrial design for the intentional collector.</p>
+            </div>
+            <div class="timeline__item">
+              <span class="timeline__year">2025</span>
+              <p class="timeline__text"><strong>Object 001 released.</strong> GIDE Mount — a minimal wall anchor for jersey display — goes live on Etsy.</p>
+            </div>
+            <div class="timeline__item">
+              <span class="timeline__year">2026</span>
+              <p class="timeline__text"><strong>Digital tools launch.</strong> World Cup 2026 Bracket Predictor and IntentLink v2 Chrome extension released.</p>
+            </div>
+            <div class="timeline__item">
+              <span class="timeline__year">Now</span>
+              <p class="timeline__text"><strong>Object 002 in development.</strong> Next physical object under engineering review.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="values">
+    <!-- ── Values ── -->
+    <section class="studio-values">
       <div class="container">
-        <p class="values__label">Core Principles</p>
-        <div class="values__grid">
-          <div class="values__item">
-            <p class="values__item-title">01. Traceable Design</p>
-            <p class="values__item-body">Every decision is traceable to a functional requirement. If it doesn't serve a purpose, it is removed.</p>
+        <p class="studio-values__label">Core Principles</p>
+        <div class="values-grid">
+          <div class="value-card">
+            <p class="value-card__num">01</p>
+            <p class="value-card__title">Traceable Design</p>
+            <p class="value-card__body">Every decision traces to a functional requirement. If it doesn't serve a purpose, it gets removed.</p>
           </div>
-          <div class="values__item">
-            <p class="values__item-title">02. Material Truth</p>
-            <p class="values__item-body">We select materials for their mechanical properties first. The aesthetic is a result of the material’s nature.</p>
+          <div class="value-card">
+            <p class="value-card__num">02</p>
+            <p class="value-card__title">Material Truth</p>
+            <p class="value-card__body">Materials are selected for mechanical properties first. The aesthetic follows from the material's nature — not the other way around.</p>
           </div>
-          <div class="values__item">
-            <p class="values__item-title">03. Deliberate Pace</p>
-            <p class="values__item-body">By focusing on one object at a time, we ensure every detail meets our engineering standards before release.</p>
+          <div class="value-card">
+            <p class="value-card__num">03</p>
+            <p class="value-card__title">Deliberate Pace</p>
+            <p class="value-card__body">One object at a time. Every detail meets engineering standards before anything ships.</p>
+          </div>
+          <div class="value-card">
+            <p class="value-card__num">04</p>
+            <p class="value-card__title">Open Documentation</p>
+            <p class="value-card__body">Case studies, tolerances, and process notes are published alongside the work. Understanding what you own matters.</p>
+          </div>
+          <div class="value-card">
+            <p class="value-card__num">05</p>
+            <p class="value-card__title">Digital Parity</p>
+            <p class="value-card__body">Tools are built to the same standard as the objects — minimal, purposeful, documented. Free to use because good utility shouldn't have a gate.</p>
+          </div>
+          <div class="value-card">
+            <p class="value-card__num">06</p>
+            <p class="value-card__title">Community First</p>
+            <p class="value-card__body">The people building alongside GIDE shape what gets made next. Suggestions, modifications, and documentation from the community are welcome.</p>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- ── Contact CTA ── -->
+    <div class="container">
+      <div style="border-top:1px solid var(--rule);padding-block:2.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;">
+        <div>
+          <p class="eyebrow" style="margin-bottom:.4rem;">Get in touch</p>
+          <p style="font-size:var(--tbase);color:var(--ink-muted);max-width:46ch;line-height:1.7;">
+            For commission work, custom requirements, or general enquiries — the studio is reachable directly.
+          </p>
+        </div>
+        <a href="mailto:gideobjects@gmail.com" class="btn">gideobjects@gmail.com</a>
+      </div>
+    </div>
+
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <div class="site-footer__inner">
+      <div class="site-footer__grid">
         <div>
-          <a href="mailto:gideobjects@gmail.com">gideobjects@gmail.com</a>
-          <p class="site-footer__copy">&copy; 2024 GIDE Objects.</p>
+          <p class="site-footer__brand-name">GIDE</p>
+          <p class="site-footer__brand-desc">A design studio making objects and tools with intention.</p>
         </div>
-        <ul class="site-footer__links">
-          <li><a href="https://instagram.com/gideobjects" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-          <li><a href="object-001.html">Objects</a></li>
-        </ul>
+        <div>
+          <p class="site-footer__col-label">Objects</p>
+          <ul class="site-footer__links">
+            <li><a href="objects.html">All Objects</a></li>
+            <li><a href="object-001.html">Object 001 — GIDE Mount</a></li>
+            <li><a href="shop.html">Shop on Etsy</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Tools</p>
+          <ul class="site-footer__links">
+            <li><a href="tools.html">All Tools</a></li>
+            <li><a href="worldcup.html">World Cup 2026</a></li>
+            <li><a href="tools.html#intentlink">IntentLink v2</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="site-footer__col-label">Studio</p>
+          <ul class="site-footer__links">
+            <li><a href="studio.html">About</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="mailto:gideobjects@gmail.com">gideobjects@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__copy">&copy; 2026 GIDE. All rights reserved.</p>
+        <div class="site-footer__social">
+          <a href="https://instagram.com/gideobjects" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://etsy.com/shop/gideobjects"  target="_blank" rel="noopener">Etsy</a>
+        </div>
       </div>
     </div>
   </footer>
