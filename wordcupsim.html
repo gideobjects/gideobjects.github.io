@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>World Cup 2026 — Bracket Simulator · GIDE Objects</title>
+<meta name="description" content="Predict the 2026 FIFA World Cup. 48 teams, 12 groups, one champion. A minimal bracket simulator by GIDE Objects." />
+<style>
+/* ── Tokens ─────────────────────────────────────────────── */
+:root {
+  --bg:        #FBFBFA;
+  --surface:   #F4F3F0;
+  --rule:      #E3E2DD;
+  --ink:       #1A1A1A;
+  --ink-mid:   #6B6B68;
+  --ink-faint: #AEADA8;
+  --accent:    #1A1A1A;
+  --gold:      #B8986A;
+  --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.5; }
+button { cursor: pointer; border: none; background: none; font: inherit; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ── Header ─────────────────────────────────────────────── */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 var(--gutter);
+}
+.site-header__inner {
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.site-header__logo {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--ink);
+}
+.site-header__logo img { height: 20px; vertical-align: middle; }
+.site-header__nav { display: flex; gap: 1.5rem; }
+.site-header__nav a {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-faint);
+  transition: color 0.15s;
+}
+.site-header__nav a:hover { color: var(--ink); }
+
+/* ── Hero ───────────────────────────────────────────────── */
+.hero {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.hero__inner {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap;
+}
+.hero__tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.5rem;
+}
+.hero__title {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+}
+.hero__subtitle {
+  font-size: 13px; color: var(--ink-mid); margin-top: 0.6rem; max-width: 52ch;
+}
+.hero__meta { display: flex; gap: 2rem; flex-wrap: wrap; }
+.hero__stat { display: flex; flex-direction: column; gap: 0.15rem; }
+.hero__stat-val {
+  font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em;
+}
+.hero__stat-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+
+/* ── Controls ───────────────────────────────────────────── */
+.controls {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap;
+}
+.controls__tabs { display: flex; gap: 0; }
+.tab-btn {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-faint);
+  padding: 0.5rem 1rem; border: 1px solid var(--rule);
+  border-right: none; background: var(--bg);
+  transition: background 0.15s, color 0.15s;
+}
+.tab-btn:first-child { border-radius: 2px 0 0 2px; }
+.tab-btn:last-child  { border-right: 1px solid var(--rule); border-radius: 0 2px 2px 0; }
+.tab-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.controls__actions { display: flex; gap: 0.75rem; align-items: center; }
+.btn-sm {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.45rem 1rem;
+  border: 1px solid var(--rule); color: var(--ink-mid);
+  background: var(--bg); border-radius: 2px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn-sm:hover { background: var(--surface); color: var(--ink); }
+.btn-sm--filled {
+  background: var(--ink); color: var(--bg); border-color: var(--ink);
+}
+.btn-sm--filled:hover { background: #333; border-color: #333; }
+.odds-toggle { display: flex; align-items: center; gap: 0.5rem; font-size: 11px; color: var(--ink-mid); }
+.odds-toggle input[type="checkbox"] { accent-color: var(--ink); width: 14px; height: 14px; cursor: pointer; }
+
+/* ── Panels ─────────────────────────────────────────────── */
+.panel { display: none; padding: 2rem 0; }
+.panel.active { display: block; }
+
+/* ── Group Stage ────────────────────────────────────────── */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px; background: var(--rule);
+}
+.group-card {
+  background: var(--bg);
+  padding: 1.25rem;
+}
+.group-card__header {
+  display: flex; align-items: baseline; gap: 0.75rem;
+  margin-bottom: 1rem; padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+.group-card__letter {
+  font-size: 18px; font-weight: 600; color: var(--ink);
+}
+.group-card__label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+.group-card__teams { display: flex; flex-direction: column; gap: 0; }
+.team-row {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.12s;
+  margin: 0 -1.25rem; padding: 0.45rem 1.25rem;
+}
+.team-row:last-child { border-bottom: none; }
+.team-row:hover { background: var(--surface); }
+.team-row.selected-1 { background: #1A1A1A; color: #FBFBFA; }
+.team-row.selected-2 { background: var(--surface); border-left: 3px solid var(--ink-faint); }
+.team-flag {
+  width: 20px; height: 14px; object-fit: cover;
+  border-radius: 1px; flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.team-flag-emoji { font-size: 16px; line-height: 1; flex-shrink: 0; }
+.team-name { font-size: 13px; font-weight: 500; flex: 1; }
+.team-odds {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+  color: var(--ink-faint); font-variant-numeric: tabular-nums;
+}
+.team-odds.favorite { color: var(--gold); }
+.team-rank {
+  font-size: 10px; color: var(--ink-faint);
+  min-width: 1.5rem; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.group-card__note {
+  font-size: 10px; color: var(--ink-faint);
+  margin-top: 0.75rem; padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* ── Bracket ────────────────────────────────────────────── */
+.bracket-scroll { overflow-x: auto; padding-bottom: 1rem; }
+.bracket-container {
+  display: flex; gap: 0; align-items: flex-start;
+  min-width: 900px;
+}
+.bracket-round {
+  flex: 1; min-width: 160px;
+  border-right: 1px solid var(--rule);
+}
+.bracket-round:last-child { border-right: none; }
+.bracket-round__header {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-faint);
+  padding: 1rem 1rem 0.75rem; border-bottom: 1px solid var(--rule);
+  text-align: center; white-space: nowrap;
+}
+.bracket-round__matches { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.bracket-match {
+  border: 1px solid var(--rule); background: var(--bg);
+  overflow: hidden;
+}
+.bracket-match__team {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.45rem 0.6rem; cursor: pointer;
+  transition: background 0.12s;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px; font-weight: 500;
+}
+.bracket-match__team:last-child { border-bottom: none; }
+.bracket-match__team:hover { background: var(--surface); }
+.bracket-match__team.winner {
+  background: var(--ink); color: var(--bg);
+}
+.bracket-match__team.winner .team-odds { color: rgba(251,251,250,0.5); }
+.bracket-match__team.eliminated { opacity: 0.35; }
+.bracket-match__team.tbd { color: var(--ink-faint); cursor: default; }
+.bracket-match__team.tbd:hover { background: transparent; }
+.bracket-spacer { height: 0.5rem; }
+
+/* ── Champion ───────────────────────────────────────────── */
+.champion-block {
+  text-align: center; padding: 2rem 1rem;
+  border: 1px solid var(--rule);
+  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+  background: var(--bg);
+}
+.champion-block__label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+.champion-block__name {
+  font-size: 1.1rem; font-weight: 600; color: var(--ink);
+  min-height: 1.5em;
+}
+.champion-block__trophy { font-size: 2rem; }
+.champion-block.filled { border-color: var(--gold); background: #FDFBF7; }
+.champion-block.filled .champion-block__name { color: var(--gold); }
+
+/* ── Insights ───────────────────────────────────────────── */
+.insights { padding: 2rem 0; }
+.insights__grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px; background: var(--rule);
+}
+.insight-card { background: var(--bg); padding: 1.5rem; }
+.insight-card__label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.75rem;
+}
+.insight-card__value {
+  font-size: 1.3rem; font-weight: 600; letter-spacing: -0.01em;
+  margin-bottom: 0.35rem;
+}
+.insight-card__desc { font-size: 12px; color: var(--ink-mid); line-height: 1.5; }
+
+/* ── Probability Bar ────────────────────────────────────── */
+.prob-bar {
+  height: 2px; background: var(--rule);
+  margin-top: 0.4rem; overflow: hidden;
+}
+.prob-bar__fill {
+  height: 100%; background: var(--ink);
+  transition: width 0.4s ease;
+}
+.prob-bar__fill.gold { background: var(--gold); }
+
+/* ── Expert comparison table ────────────────────────────── */
+.expert-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.expert-table th, .expert-table td {
+  text-align: left; padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+}
+.expert-table th {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-faint);
+  background: var(--surface);
+}
+.expert-table td:last-child { color: var(--ink-mid); }
+.match-badge {
+  display: inline-block; padding: 0.1rem 0.4rem;
+  background: var(--surface); font-size: 10px;
+  border-radius: 2px; color: var(--ink-mid);
+}
+.match-badge.agree { background: #1A1A1A; color: #FBFBFA; }
+
+/* ── Empty State ────────────────────────────────────────── */
+.empty-state {
+  padding: 3rem; text-align: center;
+  border: 1px solid var(--rule);
+}
+.empty-state p { font-size: 13px; color: var(--ink-faint); }
+
+/* ── Footer ─────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--rule);
+  padding: 1.5rem var(--gutter);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; margin-top: 3rem;
+}
+.site-footer p { font-size: 11px; color: var(--ink-faint); }
+.site-footer a { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .hero__inner { flex-direction: column; align-items: flex-start; }
+  .controls { flex-direction: column; align-items: flex-start; }
+  .site-header__nav { display: none; }
+}
+
+/* ── Odds overlay ───────────────────────────────────────── */
+.odds-overlay-active .team-odds { display: inline !important; }
+.odds-hidden .team-odds { display: none !important; }
+
+/* ── Tooltip ────────────────────────────────────────────── */
+.tooltip-wrap { position: relative; display: inline-flex; }
+.tooltip {
+  display: none; position: absolute; bottom: 125%; left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink); color: var(--bg);
+  font-size: 11px; padding: 0.35rem 0.6rem; white-space: nowrap;
+  pointer-events: none; z-index: 100;
+}
+.tooltip-wrap:hover .tooltip { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="index.html" class="site-header__logo">
+      <img src="img/gide-logo.png" alt="GIDE Objects"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
+      <span style="display:none;">GIDE</span>
+    </a>
+    <nav class="site-header__nav">
+      <a href="index.html">Studio</a>
+      <a href="object-001.html">Objects</a>
+      <a href="shop.html">Shop</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ════ HERO ════ -->
+<div class="wrap">
+  <section class="hero">
+    <div class="hero__inner">
+      <div>
+        <p class="hero__tag">GIDE Objects — Side Project</p>
+        <h1 class="hero__title">World Cup 2026<br>Bracket Simulator.</h1>
+        <p class="hero__subtitle">48 teams. 12 groups. One champion. Pick winners through every round — or let the odds guide you.</p>
+      </div>
+      <div class="hero__meta">
+        <div class="hero__stat">
+          <span class="hero__stat-val">48</span>
+          <span class="hero__stat-label">Teams</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-val">12</span>
+          <span class="hero__stat-label">Groups</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-val">104</span>
+          <span class="hero__stat-label">Matches</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-val" id="picks-made">0</span>
+          <span class="hero__stat-label">Your Picks</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CONTROLS ════ -->
+  <div class="controls">
+    <div class="controls__tabs">
+      <button class="tab-btn active" data-tab="groups">Group Stage</button>
+      <button class="tab-btn" data-tab="bracket">Knockout</button>
+      <button class="tab-btn" data-tab="insights">Insights</button>
+    </div>
+    <div class="controls__actions">
+      <label class="odds-toggle tooltip-wrap">
+        <input type="checkbox" id="odds-toggle" checked>
+        <span>Show Odds</span>
+        <span class="tooltip">Implied win % from betting markets</span>
+      </label>
+      <button class="btn-sm" id="autofill-btn">Autofill by Odds</button>
+      <button class="btn-sm" id="reset-btn">Reset</button>
+    </div>
+  </div>
+
+  <!-- ════ GROUP STAGE PANEL ════ -->
+  <div class="panel active" id="panel-groups">
+    <div class="groups-grid" id="groups-grid"></div>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:1.5rem;text-align:center;">
+      Click a team to select them as 1st (dark) or 2nd (light) in the group. Top 2 + 8 best 3rd-place teams advance.
+    </p>
+  </div>
+
+  <!-- ════ KNOCKOUT BRACKET PANEL ════ -->
+  <div class="panel" id="panel-bracket">
+    <div class="bracket-scroll">
+      <div class="bracket-container" id="bracket-container"></div>
+    </div>
+    <div style="margin-top:2rem;">
+      <div class="champion-block" id="champion-block">
+        <span class="champion-block__trophy">🏆</span>
+        <span class="champion-block__label">Your 2026 Champion</span>
+        <span class="champion-block__name" id="champion-name">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ INSIGHTS PANEL ════ -->
+  <div class="panel" id="panel-insights">
+    <div class="insights">
+      <div class="insights__grid" id="insights-grid"></div>
+
+      <div style="margin-top:1px;background:var(--rule);">
+        <div style="background:var(--bg);padding:1.5rem;">
+          <p style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:1rem;">Expert Consensus vs. Your Picks</p>
+          <div id="expert-comparison"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ FOOTER ════ -->
+<footer class="site-footer">
+  <p>GIDE Objects — World Cup 2026 Simulator. Odds sourced from ESPN / DraftKings. For entertainment only.</p>
+  <a href="index.html">← Back to Studio</a>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   DATA — All 48 confirmed teams, 12 groups
+   flag: emoji (no CDN dependency, works everywhere)
+   odds: DraftKings / ESPN implied win % (tournament winner)
+   rank: approximate FIFA ranking seed / pot
+   ══════════════════════════════════════════════════════════ */
+const GROUPS = [
+  { id: 'A', teams: [
+    { name: 'Mexico',       flag: '🇲🇽', odds: 1.3,  rank: 'Host', key: 'MEX' },
+    { name: 'South Korea',  flag: '🇰🇷', odds: 0.9,  rank: 'P2',   key: 'KOR' },
+    { name: 'South Africa', flag: '🇿🇦', odds: 0.3,  rank: 'P3',   key: 'RSA' },
+    { name: 'Czechia',      flag: '🇨🇿', odds: 0.5,  rank: 'P4',   key: 'CZE' },
+  ]},
+  { id: 'B', teams: [
+    { name: 'Canada',       flag: '🇨🇦', odds: 0.5,  rank: 'Host', key: 'CAN' },
+    { name: 'Bosnia-Herz.', flag: '🇧🇦', odds: 0.3,  rank: 'P4',   key: 'BIH' },
+    { name: 'Qatar',        flag: '🇶🇦', odds: 0.1,  rank: 'P3',   key: 'QAT' },
+    { name: 'Switzerland',  flag: '🇨🇭', odds: 1.2,  rank: 'P2',   key: 'SUI' },
+  ]},
+  { id: 'C', teams: [
+    { name: 'Brazil',       flag: '🇧🇷', odds: 8.6,  rank: 'P1',   key: 'BRA' },
+    { name: 'Morocco',      flag: '🇲🇦', odds: 2.0,  rank: 'P2',   key: 'MAR' },
+    { name: 'Haiti',        flag: '🇭🇹', odds: 0.1,  rank: 'P3',   key: 'HAI' },
+    { name: 'Scotland',     flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', odds: 0.4,  rank: 'P4',   key: 'SCO' },
+  ]},
+  { id: 'D', teams: [
+    { name: 'United States',flag: '🇺🇸', odds: 1.7,  rank: 'Host', key: 'USA' },
+    { name: 'Paraguay',     flag: '🇵🇾', odds: 0.2,  rank: 'P3',   key: 'PAR' },
+    { name: 'Australia',    flag: '🇦🇺', odds: 0.5,  rank: 'P3',   key: 'AUS' },
+    { name: 'Türkiye',      flag: '🇹🇷', odds: 1.0,  rank: 'P4',   key: 'TUR' },
+  ]},
+  { id: 'E', teams: [
+    { name: 'Germany',      flag: '🇩🇪', odds: 7.1,  rank: 'P1',   key: 'GER' },
+    { name: 'Côte d\'Ivoire',flag:'🇨🇮', odds: 0.4,  rank: 'P3',   key: 'CIV' },
+    { name: 'Curaçao',      flag: '🇨🇼', odds: 0.0,  rank: 'P4',   key: 'CUR' },
+    { name: 'Ecuador',      flag: '🇪🇨', odds: 1.1,  rank: 'P2',   key: 'ECU' },
+  ]},
+  { id: 'F', teams: [
+    { name: 'Netherlands',  flag: '🇳🇱', odds: 5.0,  rank: 'P1',   key: 'NED' },
+    { name: 'Japan',        flag: '🇯🇵', odds: 2.0,  rank: 'P2',   key: 'JPN' },
+    { name: 'Sweden',       flag: '🇸🇪', odds: 1.0,  rank: 'P4',   key: 'SWE' },
+    { name: 'Tunisia',      flag: '🇹🇳', odds: 0.2,  rank: 'P3',   key: 'TUN' },
+  ]},
+  { id: 'G', teams: [
+    { name: 'Belgium',      flag: '🇧🇪', odds: 2.9,  rank: 'P1',   key: 'BEL' },
+    { name: 'Egypt',        flag: '🇪🇬', odds: 0.3,  rank: 'P3',   key: 'EGY' },
+    { name: 'Iran',         flag: '🇮🇷', odds: 0.2,  rank: 'P4',   key: 'IRN' },
+    { name: 'New Zealand',  flag: '🇳🇿', odds: 0.0,  rank: 'P3',   key: 'NZL' },
+  ]},
+  { id: 'H', teams: [
+    { name: 'Spain',        flag: '🇪🇸', odds: 15.6, rank: 'P1',   key: 'ESP' },
+    { name: 'Cabo Verde',   flag: '🇨🇻', odds: 0.1,  rank: 'P3',   key: 'CPV' },
+    { name: 'Saudi Arabia', flag: '🇸🇦', odds: 0.3,  rank: 'P4',   key: 'KSA' },
+    { name: 'Uruguay',      flag: '🇺🇾', odds: 1.5,  rank: 'P2',   key: 'URU' },
+  ]},
+  { id: 'I', teams: [
+    { name: 'France',       flag: '🇫🇷', odds: 16.8, rank: 'P1',   key: 'FRA' },
+    { name: 'Senegal',      flag: '🇸🇳', odds: 1.0,  rank: 'P2',   key: 'SEN' },
+    { name: 'Iraq',         flag: '🇮🇶', odds: 0.1,  rank: 'P4',   key: 'IRQ' },
+    { name: 'Norway',       flag: '🇳🇴', odds: 3.3,  rank: 'P3',   key: 'NOR' },
+  ]},
+  { id: 'J', teams: [
+    { name: 'Argentina',    flag: '🇦🇷', odds: 8.8,  rank: 'P1',   key: 'ARG' },
+    { name: 'Algeria',      flag: '🇩🇿', odds: 0.2,  rank: 'P3',   key: 'ALG' },
+    { name: 'Austria',      flag: '🇦🇹', odds: 0.8,  rank: 'P2',   key: 'AUT' },
+    { name: 'Jordan',       flag: '🇯🇴', odds: 0.0,  rank: 'P4',   key: 'JOR' },
+  ]},
+  { id: 'K', teams: [
+    { name: 'Portugal',     flag: '🇵🇹', odds: 9.1,  rank: 'P1',   key: 'POR' },
+    { name: 'DR Congo',     flag: '🇨🇩', odds: 0.2,  rank: 'P4',   key: 'COD' },
+    { name: 'Colombia',     flag: '🇨🇴', odds: 2.5,  rank: 'P2',   key: 'COL' },
+    { name: 'Uzbekistan',   flag: '🇺🇿', odds: 0.1,  rank: 'P3',   key: 'UZB' },
+  ]},
+  { id: 'L', teams: [
+    { name: 'England',      flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', odds: 11.1, rank: 'P1',   key: 'ENG' },
+    { name: 'Croatia',      flag: '🇭🇷', odds: 0.8,  rank: 'P2',   key: 'CRO' },
+    { name: 'Ghana',        flag: '🇬🇭', odds: 0.2,  rank: 'P3',   key: 'GHA' },
+    { name: 'Panama',       flag: '🇵🇦', odds: 0.1,  rank: 'P4',   key: 'PAN' },
+  ]},
+];
+
+/* Expert consensus picks (implied by odds / Polymarket) */
+const EXPERT = {
+  r32: ['BRA','ESP','FRA','ENG','ARG','POR','GER','NED','BEL','NOR','JPN','URU','MEX','USA','MAR','COL'],
+  qf:  ['FRA','ENG','ARG','POR','ESP','NED','BRA','GER'],
+  sf:  ['FRA','ARG','ESP','BRA'],
+  f:   ['FRA','ESP'],
+  winner: 'FRA',
+};
+
+/* ══════════════════════════════════════════════════════════
+   STATE
+   ══════════════════════════════════════════════════════════ */
+let state = {
+  groupPicks: {},   // groupId -> {first: teamKey, second: teamKey}
+  r32: [],          // 32 team keys (in bracket order)
+  bracket: {},      // matchId -> winnerKey
+  showOdds: true,
+};
+
+function getTeam(key) {
+  for (const g of GROUPS) for (const t of g.teams) if (t.key === key) return t;
+  return null;
+}
+
+function getGroupOf(key) {
+  return GROUPS.find(g => g.teams.some(t => t.key === key));
+}
+
+/* ══════════════════════════════════════════════════════════
+   RENDER — GROUP STAGE
+   ══════════════════════════════════════════════════════════ */
+/* ── Updated Group Render with 3rd Place Support ── */
+function renderGroups() {
+  const grid = document.getElementById('groups-grid');
+  grid.innerHTML = '';
+
+  GROUPS.forEach(group => {
+    const picks = state.groupPicks[group.id] || {};
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    card.innerHTML = `
+      <div class="group-card__header">
+        <span class="group-card__letter">Group ${group.id}</span>
+        <span class="group-card__label">Pick top 3</span>
+      </div>
+      <div class="group-card__teams">
+        ${group.teams.map(t => {
+          // Determine current selection class
+          let cls = '';
+          if (picks.first === t.key) cls = 'selected-1';
+          else if (picks.second === t.key) cls = 'selected-2';
+          else if (picks.third === t.key) cls = 'selected-3';
+          
+          const oddsText = t.odds > 0 ? `${t.odds}%` : '<1%';
+          return `<div class="team-row ${cls}" data-key="${t.key}" data-group="${group.id}">
+            <span class="team-flag-emoji">${t.flag}</span>
+            <span class="team-name">${t.name}</span>
+            ${state.showOdds ? `<span class="team-odds ${t.odds > 5 ? 'favorite' : ''}">${oddsText}</span>` : ''}
+            <span class="team-rank">${t.rank}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('.team-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const key = row.dataset.key;
+      const grpId = row.dataset.group;
+      const p = state.groupPicks[grpId] || { first: null, second: null, third: null };
+
+      // Cycle Logic: 1st -> 2nd -> 3rd -> Deselect
+      if (p.first === key) { p.first = null; }
+      else if (p.second === key) { p.second = null; }
+      else if (p.third === key) { p.third = null; }
+      else if (!p.first) { p.first = key; }
+      else if (!p.second) { p.second = key; }
+      else if (!p.third) { p.third = key; }
+
+      state.groupPicks[grpId] = p;
+      updateR32();
+      renderGroups();
+      renderBracket();
+      renderInsights();
+      updatePickCount();
+    });
+  });
+}
+
+/* ── Updated R32 Logic with Wildcard Support ── */
+function updateR32() {
+  const firsts = [], seconds = [], thirds = [];
+  
+  GROUPS.forEach(g => {
+    const p = state.groupPicks[g.id] || {};
+    if (p.first) firsts.push({ key: p.first, group: g.id });
+    if (p.second) seconds.push({ key: p.second, group: g.id });
+    if (p.third) thirds.push(getTeam(p.third));
+  });
+
+  // Calculate the 8 best 3rd-place teams (sorted by odds for simulation)
+  const bestThirds = thirds
+    .filter(Boolean)
+    .sort((a, b) => b.odds - a.odds)
+    .slice(0, 8)
+    .map(t => ({ key: t.key, group: '3rd' }));
+
+  const allQualifiers = [...firsts, ...seconds, ...bestThirds];
+  
+  state.r32 = [];
+  // FIFA 2026 uses 16 matches for the Round of 32
+  for (let i = 0; i < 16; i++) {
+    // This is a simplified pairing: 1sts vs 3rds/2nds
+    state.r32.push({ 
+      teamA: allQualifiers[i]?.key || null, 
+      teamB: allQualifiers[31 - i]?.key || null, 
+      matchId: `r32_${i}` 
+    });
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RENDER — KNOCKOUT BRACKET
+   ══════════════════════════════════════════════════════════ */
+function renderBracket() {
+  const container = document.getElementById('bracket-container');
+  container.innerHTML = '';
+
+  const rounds = [
+    { id: 'r32', label: 'Round of 32', count: 16 },
+    { id: 'r16', label: 'Round of 16', count: 8 },
+    { id: 'qf',  label: 'Quarter-Finals', count: 4 },
+    { id: 'sf',  label: 'Semi-Finals', count: 2 },
+    { id: 'f',   label: 'Final', count: 1 },
+  ];
+
+  rounds.forEach((round, ri) => {
+    const col = document.createElement('div');
+    col.className = 'bracket-round';
+    const header = document.createElement('div');
+    header.className = 'bracket-round__header';
+    header.textContent = round.label;
+    col.appendChild(header);
+
+    const matchesDiv = document.createElement('div');
+    matchesDiv.className = 'bracket-round__matches';
+
+    for (let i = 0; i < round.count; i++) {
+      const matchId = `${round.id}_${i}`;
+      let teamAKey = null, teamBKey = null;
+
+      if (round.id === 'r32') {
+        teamAKey = state.r32[i]?.teamA || null;
+        teamBKey = state.r32[i]?.teamB || null;
+      } else {
+        // Get winners from previous round
+        const prevRound = rounds[ri - 1];
+        const prevA = `${prevRound.id}_${i * 2}`;
+        const prevB = `${prevRound.id}_${i * 2 + 1}`;
+        teamAKey = state.bracket[prevA] || null;
+        teamBKey = state.bracket[prevB] || null;
+      }
+
+      const teamA = teamAKey ? getTeam(teamAKey) : null;
+      const teamB = teamBKey ? getTeam(teamBKey) : null;
+      const winner = state.bracket[matchId];
+
+      const match = document.createElement('div');
+      match.className = 'bracket-match';
+
+      ['A','B'].forEach(side => {
+        const teamKey = side === 'A' ? teamAKey : teamBKey;
+        const team = side === 'A' ? teamA : teamB;
+        const row = document.createElement('div');
+        row.className = 'bracket-match__team';
+        if (!team) {
+          row.classList.add('tbd');
+          row.innerHTML = `<span style="font-size:11px;color:var(--ink-faint);">TBD</span>`;
+        } else {
+          const isWinner = winner === teamKey;
+          const isEliminated = winner && winner !== teamKey;
+          if (isWinner) row.classList.add('winner');
+          if (isEliminated) row.classList.add('eliminated');
+
+          const oddsText = team.odds > 0 ? `${team.odds}%` : '<1%';
+          row.innerHTML = `
+            <span class="team-flag-emoji" style="font-size:13px;">${team.flag}</span>
+            <span class="team-name" style="font-size:12px;">${team.name}</span>
+            ${state.showOdds ? `<span class="team-odds ${team.odds > 5 ? 'favorite' : ''}">${oddsText}</span>` : ''}
+          `;
+          row.addEventListener('click', () => {
+            if (!teamA || !teamB) return;
+            state.bracket[matchId] = teamKey;
+            renderBracket();
+            renderInsights();
+            updatePickCount();
+          });
+        }
+        match.appendChild(row);
+      });
+
+      matchesDiv.appendChild(match);
+      if (i < round.count - 1) {
+        const spacer = document.createElement('div');
+        spacer.className = 'bracket-spacer';
+        matchesDiv.appendChild(spacer);
+      }
+    }
+
+    col.appendChild(matchesDiv);
+    container.appendChild(col);
+  });
+
+  // Champion display
+  const finalWinner = state.bracket['f_0'];
+  const championBlock = document.getElementById('champion-block');
+  const championName = document.getElementById('champion-name');
+  if (finalWinner) {
+    const t = getTeam(finalWinner);
+    championName.textContent = `${t.flag} ${t.name}`;
+    championBlock.classList.add('filled');
+  } else {
+    championName.textContent = '—';
+    championBlock.classList.remove('filled');
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RENDER — INSIGHTS
+   ══════════════════════════════════════════════════════════ */
+function renderInsights() {
+  const grid = document.getElementById('insights-grid');
+  const expertDiv = document.getElementById('expert-comparison');
+
+  const totalPicks = countPicks();
+  const champion = state.bracket['f_0'];
+  const championTeam = champion ? getTeam(champion) : null;
+
+  const sfKeys = [0,1].map(i => state.bracket[`sf_${i}`]).filter(Boolean);
+  const qfKeys = [0,1,2,3].map(i => state.bracket[`qf_${i}`]).filter(Boolean);
+
+  // Insights cards
+  const insights = [
+    {
+      label: 'Your Champion',
+      value: championTeam ? `${championTeam.flag} ${championTeam.name}` : '—',
+      desc: championTeam
+        ? `Betting markets give ${championTeam.name} a ${championTeam.odds}% implied probability of winning.`
+        : 'Complete the bracket to see your champion.',
+      prob: championTeam ? championTeam.odds : 0,
+    },
+    {
+      label: 'Consensus Favourite',
+      value: '🇫🇷 France',
+      desc: 'France leads prediction markets at 16.8% implied probability, with Spain close behind at 15.4%.',
+      prob: 16.8,
+      gold: true,
+    },
+    {
+      label: 'Biggest Upset Risk',
+      value: '🇳🇴 Norway',
+      desc: '+3000 longshot but ranked in Europe\'s top tier. Real threat in Group I vs France.',
+      prob: 3.3,
+    },
+    {
+      label: 'Dark Horse',
+      value: '🇯🇵 Japan',
+      desc: 'Japan opened at 100-1 but is now +5000. Organised defence, technical play, dangerous in a bracket.',
+      prob: 2.0,
+    },
+    {
+      label: 'Your Total Picks',
+      value: `${totalPicks}`,
+      desc: 'Complete all group selections and knockout rounds for full bracket.',
+      prob: Math.min(100, (totalPicks / 43) * 100),
+    },
+    {
+      label: 'Defending Champions',
+      value: '🇦🇷 Argentina',
+      desc: 'Argentina at +850 (8.8%) — defending champions with Messi in what may be his final World Cup.',
+      prob: 8.8,
+    },
+  ];
+
+  grid.innerHTML = insights.map(ins => `
+    <div class="insight-card">
+      <p class="insight-card__label">${ins.label}</p>
+      <p class="insight-card__value">${ins.value}</p>
+      <p class="insight-card__desc">${ins.desc}</p>
+      ${ins.prob > 0 ? `<div class="prob-bar"><div class="prob-bar__fill ${ins.gold ? 'gold' : ''}" style="width:${Math.min(100, ins.prob * 4)}%"></div></div>` : ''}
+    </div>
+  `).join('');
+
+  // Expert comparison
+  const rounds = [
+    { id: 'r32', label: 'Round of 32', expert: EXPERT.r32 },
+    { id: 'qf',  label: 'Quarter-Finals', expert: EXPERT.qf },
+    { id: 'sf',  label: 'Semi-Finals', expert: EXPERT.sf },
+    { id: 'f',   label: 'Final', expert: EXPERT.f },
+  ];
+
+  let rows = '';
+  rounds.forEach(r => {
+    const myKeys = [];
+    const count = r.id === 'r32' ? 16 : r.id === 'qf' ? 4 : r.id === 'sf' ? 2 : 2;
+    for (let i = 0; i < count; i++) {
+      const w = state.bracket[`${r.id}_${i}`];
+      if (w) myKeys.push(w);
+    }
+
+    if (myKeys.length === 0) {
+      rows += `<tr><td>${r.label}</td><td colspan="3" style="color:var(--ink-faint)">Not yet picked</td></tr>`;
+      return;
+    }
+
+    const expertSet = new Set(r.expert);
+    const mySet = new Set(myKeys);
+    const agree = [...mySet].filter(k => expertSet.has(k));
+    const disagree = [...mySet].filter(k => !expertSet.has(k));
+
+    rows += `<tr>
+      <td>${r.label}</td>
+      <td>${myKeys.map(k => {
+        const t = getTeam(k);
+        return t ? `<span class="tooltip-wrap">${t.flag}<span class="tooltip">${t.name}</span></span>` : '';
+      }).join(' ')}</td>
+      <td><span class="match-badge agree">${agree.length} agree</span> <span class="match-badge">${disagree.length} differ</span></td>
+    </tr>`;
+  });
+
+  expertDiv.innerHTML = totalPicks > 0
+    ? `<table class="expert-table">
+        <thead><tr><th>Round</th><th>Your Picks</th><th>vs. Consensus</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`
+    : '<p style="font-size:13px;color:var(--ink-faint);">Make picks to compare against expert consensus.</p>';
+}
+
+function countPicks() {
+  let n = 0;
+  GROUPS.forEach(g => {
+    const p = state.groupPicks[g.id] || {};
+    if (p.first) n++;
+    if (p.second) n++;
+  });
+  Object.keys(state.bracket).forEach(k => { if (state.bracket[k]) n++; });
+  return n;
+}
+
+function updatePickCount() {
+  document.getElementById('picks-made').textContent = countPicks();
+}
+
+/* ══════════════════════════════════════════════════════════
+   AUTOFILL — Pick by highest odds in each group/round
+   ══════════════════════════════════════════════════════════ */
+function autofill() {
+  // Group stage
+  GROUPS.forEach(g => {
+    const sorted = [...g.teams].sort((a, b) => b.odds - a.odds);
+    state.groupPicks[g.id] = { first: sorted[0].key, second: sorted[1].key };
+  });
+  updateR32();
+
+  // Knockout rounds
+  const rounds = ['r32','r16','qf','sf','f'];
+  const counts  = [16, 8, 4, 2, 1];
+  rounds.forEach((r, ri) => {
+    for (let i = 0; i < counts[ri]; i++) {
+      let aKey, bKey;
+      if (r === 'r32') {
+        aKey = state.r32[i]?.teamA;
+        bKey = state.r32[i]?.teamB;
+      } else {
+        const prev = rounds[ri - 1];
+        aKey = state.bracket[`${prev}_${i * 2}`];
+        bKey = state.bracket[`${prev}_${i * 2 + 1}`];
+      }
+      if (aKey && bKey) {
+        const a = getTeam(aKey), b = getTeam(bKey);
+        state.bracket[`${r}_${i}`] = (a?.odds || 0) >= (b?.odds || 0) ? aKey : bKey;
+      }
+    }
+  });
+
+  renderGroups();
+  renderBracket();
+  renderInsights();
+  updatePickCount();
+}
+
+/* ══════════════════════════════════════════════════════════
+   TABS
+   ══════════════════════════════════════════════════════════ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`panel-${btn.dataset.tab}`).classList.add('active');
+
+    if (btn.dataset.tab === 'bracket') { renderBracket(); }
+    if (btn.dataset.tab === 'insights') { renderInsights(); }
+  });
+});
+
+/* ══════════════════════════════════════════════════════════
+   ODDS TOGGLE
+   ══════════════════════════════════════════════════════════ */
+document.getElementById('odds-toggle').addEventListener('change', function() {
+  state.showOdds = this.checked;
+  renderGroups();
+  renderBracket();
+});
+
+/* ══════════════════════════════════════════════════════════
+   CONTROLS
+   ══════════════════════════════════════════════════════════ */
+document.getElementById('autofill-btn').addEventListener('click', autofill);
+document.getElementById('reset-btn').addEventListener('click', () => {
+  state.groupPicks = {};
+  state.r32 = [];
+  state.bracket = {};
+  renderGroups();
+  renderBracket();
+  renderInsights();
+  updatePickCount();
+});
+
+/* ══════════════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════════════ */
+renderGroups();
+renderBracket();
+renderInsights();
+</script>
+</body>
+</html>
