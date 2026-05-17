@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GIDE — Design Studio</title>
+  <title>GIDE Objects</title>
   <meta name="description" content="GIDE is a design studio making physical objects and digital tools with intention." />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
@@ -13,7 +13,7 @@
   <!-- ════ HEADER ════ -->
   <header class="site-header">
     <div class="container site-header__inner">
-      <a href="index.html" class="site-header__logo" aria-label="GIDE — Home">
+      <a href="index.html" class="site-header__logo" aria-label="GIDE Home">
         <img src="img/gide-logo.png" alt="GIDE" height="22"
           onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
         <span class="site-header__logo-text" style="display:none;">GIDE</span>
@@ -31,14 +31,6 @@
   </header>
 
   <main>
-
-    <!-- ════ HERO ════ -->
-    <!--
-      HERO IMAGE PLACEHOLDER
-      Drop your hero photo into img/home/hero.jpg (or .png / .webp).
-      Recommended: full-bleed lifestyle or studio shot, 1600×900px minimum.
-      Remove the placeholder div and uncomment the <img> tag below.
-    -->
     <section class="hero" style="padding-bottom:0;border-bottom:none;">
       <div style="
         width:100%;
@@ -51,11 +43,9 @@
         position:relative;
         overflow:hidden;
       ">
-        <!-- Uncomment once you have your hero image:
-        <img src="img/home/hero.jpg" alt="GIDE studio" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" />
-        -->
+        <img src="img/home/hero.png" alt="GIDE studio" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" />
+   
         <span style="font-size:var(--txs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);">
-          HERO IMAGE — img/home/hero.jpg
         </span>
       </div>
 
@@ -63,7 +53,7 @@
         <div class="hero-content fade-in-up">
           <span class="u-label">Design Studio // 2026</span>
           <h1 class="hero-title">Intentionality through<br>form and logic.</h1>
-          <p class="hero-tagline">GIDE makes physical objects and digital tools — designed with the same discipline, built to last.</p>
+          <p class="hero-tagline">GIDE makes physical objects and digital tools, designed with the same discipline, built to last.</p>
           <div class="hero-actions">
             <a href="objects.html" class="btn btn--filled">View Objects</a>
             <a href="tools.html"   class="btn">Explore Tools</a>
@@ -76,7 +66,7 @@
     <section class="showcase-grid container">
       <div class="section-label">Selected Projects</div>
 
-      <!-- Object 001 — GIDE Mount -->
+      <!-- Object 001 GIDE Mount -->
       <div class="showcase-item">
         <div class="visual-box">
           <img src="img/001-mount/base.png" alt="GIDE Mount" />
@@ -89,41 +79,34 @@
         </div>
       </div>
 
-      <!-- World Cup Simulator -->
-      <div class="showcase-item">
-        <div class="visual-box" style="background:var(--bg-surface);align-items:center;justify-content:center;">
-          <!--
-            IMAGE PLACEHOLDER — World Cup preview
-            Drop img/tools/worldcup-preview.png and uncomment:
-            <img src="img/tools/worldcup-preview.png" alt="World Cup Simulator" />
-          -->
-          <span style="font-size:var(--txs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);">img/tools/worldcup-preview.png</span>
-        </div>
-        <div class="info-box">
-          <span class="category">Digital // Tool 01</span>
-          <h2>WORLD CUP 2026</h2>
-          <p>A minimal bracket simulator for all 48 teams across 12 groups. Pick winners round by round. Mobile-first, no account needed.</p>
-          <a href="worldcup.html" class="text-link">Open Tool →</a>
-        </div>
+<!-- World Cup Simulator -->
+<div class="showcase-item">
+  <div class="visual-box" style="background:var(--bg-surface);align-items:center;justify-content:center;">
+    <img src="img/tools/worldcup-preview.png" alt="World Cup Simulator" />
+  </div>
+
+  <div class="info-box">
+    <span class="category">Digital // Tool 01</span>
+    <h2>WORLD CUP 2026</h2>
+    <p>A minimal bracket simulator for all 48 teams across 12 groups. Pick winners round by round. Mobile-first, no account needed.</p>
+    <a href="worldcup.html" class="text-link">Open Tool →</a>
+  </div>
+</div>
+
+    <!-- IntentLink -->
+    <div class="showcase-item">
+      <div class="visual-box" style="background:var(--bg-surface);align-items:center;justify-content:center;">
+          <img src="img/tools/intentlink-preview.png" alt="IntentLink Chrome Extension" />
       </div>
 
-      <!-- IntentLink -->
-      <div class="showcase-item">
-        <div class="visual-box" style="background:var(--bg-surface);align-items:center;justify-content:center;">
-          <!--
-            IMAGE PLACEHOLDER — IntentLink preview
-            Drop img/tools/intentlink-preview.png and uncomment:
-            <img src="img/tools/intentlink-preview.png" alt="IntentLink Chrome Extension" />
-          -->
-          <span style="font-size:var(--txs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);">img/tools/intentlink-preview.png</span>
-        </div>
-        <div class="info-box">
-          <span class="category">Digital // Tool 02</span>
-          <h2>INTENTLINK V2</h2>
-          <p>A Chrome extension that parses your Google search intent — coding, medical, legal, finance — and routes you straight to authoritative sources. Free on GitHub.</p>
-          <a href="tools.html#intentlink" class="text-link">See Details →</a>
-        </div>
+      <div class="info-box">
+        <span class="category">Digital // Tool 02</span>
+        <h2>INTENTLINK V2</h2>
+        <p>A Chrome extension that parses your Google search intent; coding, medical, legal, finance and routes you straight to authoritative sources. Free on GitHub.</p>
+        <a href="tools.html#intentlink" class="text-link">See Details →</a>
       </div>
+    </div>
+
     </section>
 
     <!-- ════ THREE PILLARS NAV ════ -->
@@ -135,7 +118,7 @@
             Physical
           </div>
           <p class="hub-card__title">Objects</p>
-          <p class="hub-card__desc">Precision-made hardware for people who live intentionally. Starting with Object 001 — the GIDE Mount.</p>
+          <p class="hub-card__desc">Precision-made hardware for people who live intentionally. Starting with Object 001, the GIDE Mount.</p>
           <span class="hub-card__count">1 Object Available</span>
         </a>
         <a href="tools.html" class="hub-card hub-card--tools">
@@ -144,7 +127,7 @@
             Digital
           </div>
           <p class="hub-card__title">Tools</p>
-          <p class="hub-card__desc">Side projects built in the same spirit as the objects — minimal, purposeful, and free to use.</p>
+          <p class="hub-card__desc">Digital tools built in the same spirit as the objects. Minimal, purposeful, and free to use.</p>
           <span class="hub-card__count">2 Tools Live</span>
         </a>
         <a href="community.html" class="hub-card hub-card--community">
@@ -173,7 +156,7 @@
           <p class="site-footer__col-label">Objects</p>
           <ul class="site-footer__links">
             <li><a href="objects.html">All Objects</a></li>
-            <li><a href="object-001.html">Object 001 — GIDE Mount</a></li>
+            <li><a href="object-001.html">Object 001 GIDE Mount</a></li>
             <li><a href="shop.html">Shop on Etsy</a></li>
           </ul>
         </div>
