@@ -4,13 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>World Cup 2026 — Bracket Predictor · GIDE</title>
-  <meta name="description" content="Pick your 2026 FIFA World Cup winner. Rank each group of 4, advance teams through the knockout rounds, and share your champion." />
+  <meta name="description" content="Pick your 2026 FIFA World Cup winner. Drag to rank each group, advance teams through the knockout rounds, and share your champion." />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     :root { --gold: #B8986A; }
 
-    /* ── Progress ───────────────────────────────────────────── */
+    /* ── CSS type aliases that match the hub style.css token names ── */
+    :root {
+      --t2xs:  0.625rem;
+      --txs:   0.6875rem;
+      --tsm:   0.8125rem;
+      --tbase: 1rem;
+      --tlg:   1.125rem;
+      --txl:   1.375rem;
+      --t2xl:  1.75rem;
+      --t3xl:  2.25rem;
+      --t4xl:  3rem;
+      --t5xl:  3.75rem;
+      --bg-surface: #F0EFEC;
+    }
+
+    /* ── Progress ─────────────────────────────────────────────── */
     .wc-progress {
       display: flex; gap: 3px;
       padding: 1.25rem 0;
@@ -23,7 +38,7 @@
     .wc-progress__step.done   { background: var(--ink); }
     .wc-progress__step.active { background: var(--ink-mid); }
 
-    /* ── Page header ────────────────────────────────────────── */
+    /* ── Page header ──────────────────────────────────────────── */
     .wc-header {
       padding-block: clamp(2rem,5vw,3.5rem) 0;
       border-bottom: 1px solid var(--rule);
@@ -44,7 +59,7 @@
       letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint);
     }
 
-    /* ── Round label ────────────────────────────────────────── */
+    /* ── Round label ──────────────────────────────────────────── */
     .wc-round {
       padding: 1.5rem 0 1rem;
       display: flex; align-items: baseline;
@@ -58,9 +73,9 @@
       letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint);
     }
 
-    /* ══════════════════════════════════════════════════════════
+    /* ══════════════════════════════════════════
        GROUP STAGE
-    ══════════════════════════════════════════════════════════ */
+    ═════════════════════════════════════════════ */
     .groups-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -81,7 +96,6 @@
     }
     .group-teams { display: flex; flex-direction: column; }
 
-    /* ── Team row (draggable) ───────────────────────────────── */
     .team-row {
       display: flex; align-items: center; gap: .65rem;
       padding: .65rem 1rem;
@@ -107,7 +121,6 @@
 
     .team-flag { font-size: 18px; line-height: 1; flex-shrink: 0; }
     .team-name { font-size: var(--tsm); font-weight: 600; flex: 1; line-height: 1.2; }
-
     .team-badge {
       font-size: var(--t2xs); font-weight: 700;
       letter-spacing: .08em; text-transform: uppercase;
@@ -115,7 +128,6 @@
       color: var(--ink-faint); white-space: nowrap;
     }
     .team-badge.advance { color: var(--accent-tools); border-color: var(--accent-tools); }
-
     .drag-handle {
       font-size: 12px; color: var(--ink-faint); opacity: .35;
       flex-shrink: 0; pointer-events: none;
@@ -127,10 +139,7 @@
       border-top: 1px solid var(--rule);
       display: flex; align-items: center; justify-content: space-between; gap: .5rem;
     }
-    .group-card__footer p {
-      font-size: var(--t2xs); color: var(--ink-faint); letter-spacing: .06em;
-    }
-
+    .group-card__footer p { font-size: var(--t2xs); color: var(--ink-faint); letter-spacing: .06em; }
     .btn-lock {
       font-size: var(--t2xs); font-weight: 700;
       letter-spacing: .1em; text-transform: uppercase;
@@ -138,13 +147,13 @@
       border: 1px solid var(--ink); color: var(--ink); background: var(--bg);
       cursor: pointer; transition: background .15s, color .15s;
     }
-    .btn-lock:hover       { background: var(--ink); color: var(--bg); }
-    .btn-lock.locked      { background: var(--ink); color: var(--bg); }
-    .btn-lock.locked:hover{ background: var(--ink-mid); border-color: var(--ink-mid); }
+    .btn-lock:hover        { background: var(--ink); color: var(--bg); }
+    .btn-lock.locked       { background: var(--ink); color: var(--bg); }
+    .btn-lock.locked:hover { background: var(--ink-mid); border-color: var(--ink-mid); }
 
-    /* ══════════════════════════════════════════════════════════
-       KNOCKOUT ROUNDS
-    ══════════════════════════════════════════════════════════ */
+    /* ══════════════════════════════════════════
+       KNOCKOUT
+    ═════════════════════════════════════════════ */
     .ko-grid {
       display: grid; gap: 1px; background: var(--rule);
       grid-template-columns: 1fr;
@@ -176,7 +185,7 @@
     .ko-team.tbd .ko-team__flag { opacity: .2; }
     .ko-team.tbd .ko-team__name { color: var(--ink-faint); }
 
-    /* ── Bottom nav ─────────────────────────────────────────── */
+    /* ── Nav ──────────────────────────────────────────────────── */
     .wc-nav {
       display: flex; align-items: center;
       justify-content: space-between; flex-wrap: wrap;
@@ -191,44 +200,87 @@
     }
     .wc-reset:hover { color: var(--ink); }
 
-    /* ══════════════════════════════════════════════════════════
+    /* ══════════════════════════════════════════
        CHAMPION SCREEN
-    ══════════════════════════════════════════════════════════ */
+    ═════════════════════════════════════════════ */
     #champion-screen {
-      display: none; flex-direction: column;
-      align-items: center; text-align: center;
-      padding: 4rem 1rem 5rem; gap: 1.25rem;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 1rem 4rem;
+      gap: 1.25rem;
     }
     #champion-screen.visible { display: flex; }
 
-    .c-trophy  { font-size: 3.5rem; animation: cpop .5s cubic-bezier(.34,1.56,.64,1) both; }
+    .c-trophy { font-size: 3rem; animation: cpop .5s cubic-bezier(.34,1.56,.64,1) both; }
     .c-eyebrow {
       font-size: var(--txs); font-weight: 700;
       letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint);
     }
-    .c-flag { font-size: 5rem; line-height: 1; animation: cpop .5s .1s cubic-bezier(.34,1.56,.64,1) both; }
+    .c-flag {
+      font-size: 4.5rem; line-height: 1;
+      animation: cpop .5s .1s cubic-bezier(.34,1.56,.64,1) both;
+    }
     .c-name {
       font-size: clamp(var(--t3xl), 9vw, var(--t5xl));
       font-weight: 700; letter-spacing: -.03em; line-height: 1;
-      color: var(--gold); animation: cpop .5s .15s cubic-bezier(.34,1.56,.64,1) both;
+      color: var(--gold);
+      animation: cpop .5s .15s cubic-bezier(.34,1.56,.64,1) both;
     }
     .c-tagline {
       font-size: var(--tbase); color: var(--ink-muted);
-      max-width: 34ch; line-height: 1.65;
+      max-width: 30ch; line-height: 1.65;
     }
     @keyframes cpop {
       from { transform: scale(.6); opacity: 0; }
       to   { transform: scale(1);  opacity: 1; }
     }
-    .c-summary {
-      border: 1px solid var(--rule); padding: 1.25rem 1.5rem;
-      font-size: var(--tsm); color: var(--ink-muted);
-      line-height: 1.85; text-align: left; max-width: 44ch; width: 100%;
+
+    /* ── Share card wrapper ────────────────────────────────────── */
+    .share-section {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .75rem;
     }
-    .c-summary strong { color: var(--ink); font-weight: 700; }
+    .share-label {
+      font-size: var(--t2xs); font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--ink-faint);
+      align-self: flex-start;
+    }
+
+    /* The canvas itself */
+    #share-canvas {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      display: block;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      animation: cpop .4s .3s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    .share-hint {
+      font-size: var(--t2xs);
+      color: var(--ink-faint);
+      line-height: 1.55;
+      text-align: center;
+      max-width: 30ch;
+    }
+    /* On iOS we show "press and hold" — on desktop "right-click to save" */
+    .share-hint--desktop { display: none; }
+    @media (pointer: fine) {
+      .share-hint--mobile  { display: none; }
+      .share-hint--desktop { display: block; }
+    }
+
     .c-actions {
       display: flex; flex-wrap: wrap; gap: .75rem;
-      justify-content: center; margin-top: .5rem;
+      justify-content: center;
     }
   </style>
 </head>
@@ -268,18 +320,9 @@
             </p>
           </div>
           <div class="wc-header__stats">
-            <div>
-              <p class="wc-stat__val">12</p>
-              <p class="wc-stat__lbl">Groups</p>
-            </div>
-            <div>
-              <p class="wc-stat__val">48</p>
-              <p class="wc-stat__lbl">Teams</p>
-            </div>
-            <div>
-              <p class="wc-stat__val" id="picks-stat">0</p>
-              <p class="wc-stat__lbl">Locked</p>
-            </div>
+            <div><p class="wc-stat__val">12</p><p class="wc-stat__lbl">Groups</p></div>
+            <div><p class="wc-stat__val">48</p><p class="wc-stat__lbl">Teams</p></div>
+            <div><p class="wc-stat__val" id="picks-stat">0</p><p class="wc-stat__lbl">Locked</p></div>
           </div>
         </div>
       </div>
@@ -296,9 +339,7 @@
             <h2>Group Stage</h2>
             <p>Drag to rank · Lock top 2 to advance</p>
           </div>
-
           <div class="groups-grid" id="groups-grid"></div>
-
           <div class="wc-nav">
             <button class="wc-reset" id="btn-reset-groups">Reset all groups</button>
             <div style="display:flex;gap:.75rem;align-items:center;">
@@ -313,9 +354,7 @@
             <h2 id="ko-title">Round of 32</h2>
             <p id="ko-sub">Pick 16 winners</p>
           </div>
-
           <div class="ko-grid" id="ko-grid"></div>
-
           <div class="wc-nav">
             <button class="btn btn--ghost btn--sm" id="btn-ko-prev">← Back</button>
             <div style="display:flex;gap:.75rem;align-items:center;">
@@ -327,17 +366,27 @@
 
       </div>
 
-      <!-- CHAMPION SCREEN -->
+      <!-- ══════════════════════════════════════════
+           CHAMPION SCREEN
+      ═════════════════════════════════════════════ -->
       <div id="champion-screen">
         <p class="c-trophy">🏆</p>
         <p class="c-eyebrow">Your 2026 World Cup Champion</p>
         <p class="c-flag"  id="c-flag"></p>
         <p class="c-name"  id="c-name"></p>
-        <p class="c-tagline">You picked them through every round. Share it — see who agrees.</p>
-        <div class="c-summary" id="c-summary"></div>
+        <p class="c-tagline">You backed them all the way. Here's your story card.</p>
+
+        <!-- SHARE CARD -->
+        <div class="share-section">
+          <p class="share-label">Your share card</p>
+          <canvas id="share-canvas" width="800" height="1400"></canvas>
+          <p class="share-hint share-hint--mobile">Press and hold the image → Save to Photos → Share to your story</p>
+          <p class="share-hint share-hint--desktop">Right-click the image → Save, or use the Download button below</p>
+        </div>
+
         <div class="c-actions">
-          <button class="btn btn--filled" id="btn-share">Copy to share</button>
-          <button class="btn btn--ghost"  id="btn-restart">Start over</button>
+          <a id="btn-download" class="btn btn--filled" download="my-world-cup-2026.png">Download Image</a>
+          <button class="btn btn--ghost" id="btn-restart">Start over</button>
         </div>
       </div>
 
@@ -365,7 +414,6 @@
           <ul class="site-footer__links">
             <li><a href="tools.html">All Tools</a></li>
             <li><a href="worldcup.html">World Cup 2026</a></li>
-            <li><a href="tools.html#intentlink">IntentLink v2</a></li>
           </ul>
         </div>
         <div>
@@ -417,9 +465,9 @@ const KO_ROUNDS = [
 /* ═══════════════════════════════════════════════════
    STATE
 ═══════════════════════════════════════════════════ */
-let groupOrder  = {};  // id -> [k,k,k,k]
-let groupLocked = {};  // id -> bool
-let ko = [];           // ko[r] = [{a,b,winner}]
+let groupOrder  = {};
+let groupLocked = {};
+let ko = [];
 let koRound = 0;
 
 function reset() {
@@ -448,10 +496,9 @@ function updatePicksStat() {
 }
 
 /* ═══════════════════════════════════════════════════
-   PROGRESS
+   PROGRESS BAR
 ═══════════════════════════════════════════════════ */
 function renderProgress(step) {
-  // step: 0=groups, 1–5=KO rounds
   document.getElementById('progress-bar').innerHTML =
     Array.from({length:6},(_,i)=>{
       let c='wc-progress__step';
@@ -537,7 +584,7 @@ function checkGroupsBtn() {
   btn.textContent = done ? 'Continue to Round of 32 →' : `Lock all groups to continue (${lockedCount()}/12)`;
 }
 
-/* ── Desktop drag ───────────────────────────────── */
+/* ── Desktop drag ─────────────────────────────── */
 let dSrcKey=null, dSrcGrp=null;
 function dStart(e){ dSrcKey=e.currentTarget.dataset.key; dSrcGrp=e.currentTarget.dataset.group; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
 function dOver(e) { e.preventDefault(); document.querySelectorAll('.drag-over').forEach(r=>r.classList.remove('drag-over')); e.currentTarget.classList.add('drag-over'); }
@@ -551,21 +598,19 @@ function dDrop(e) {
 }
 function dEnd(e) { e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.drag-over').forEach(r=>r.classList.remove('drag-over')); dSrcKey=dSrcGrp=null; }
 
-/* ── Touch drag ─────────────────────────────────── */
+/* ── Touch drag ───────────────────────────────── */
 let tEl=null,tGrp=null,tKey=null,tClone=null;
 function tStart(e){ const r=e.currentTarget; tEl=r; tKey=r.dataset.key; tGrp=r.dataset.group; tClone=r.cloneNode(true); const rect=r.getBoundingClientRect(); tClone.style.cssText=`position:fixed;left:${rect.left}px;top:${rect.top}px;width:${r.offsetWidth}px;opacity:.82;z-index:999;pointer-events:none;background:var(--bg-surface);border:1px solid var(--rule);`; document.body.appendChild(tClone); r.classList.add('dragging'); }
 function tMove(e){ e.preventDefault(); if(!tClone) return; const touch=e.touches[0]; tClone.style.top=(touch.clientY-22)+'px'; tClone.style.display='none'; const el=document.elementFromPoint(touch.clientX,touch.clientY); tClone.style.display=''; const over=el?.closest('.team-row'); document.querySelectorAll('.drag-over').forEach(r=>r.classList.remove('drag-over')); if(over&&over!==tEl&&over.dataset.group===tGrp) over.classList.add('drag-over'); }
 function tEnd(){ if(tClone){tClone.remove();tClone=null;} if(!tEl) return; tEl.classList.remove('dragging'); const over=document.querySelector('.drag-over'); if(over&&over.dataset.group===tGrp&&over.dataset.key!==tKey){ const o=groupOrder[tGrp],fi=o.indexOf(tKey),ti=o.indexOf(over.dataset.key); o.splice(fi,1);o.splice(ti,0,tKey); renderGroupRows(tGrp); document.querySelectorAll('.drag-over').forEach(r=>r.classList.remove('drag-over')); } tEl=tKey=tGrp=null; }
 
 /* ═══════════════════════════════════════════════════
-   BUILD R32 from group results
-   FIFA 2026 official bracket pairings
+   BUILD R32
 ═══════════════════════════════════════════════════ */
 function buildR32() {
-  const f=GROUPS.map(g=>groupOrder[g.id][0]); // firsts
-  const s=GROUPS.map(g=>groupOrder[g.id][1]); // seconds
-  const th=GROUPS.slice(0,8).map(g=>groupOrder[g.id][2]); // best 3rds (simplified: take 3rd of first 8 groups)
-  // Official R32 cross pairings
+  const f=GROUPS.map(g=>groupOrder[g.id][0]);
+  const s=GROUPS.map(g=>groupOrder[g.id][1]);
+  const th=GROUPS.slice(0,8).map(g=>groupOrder[g.id][2]);
   const pairs=[
     [f[0],s[1]],[f[2],s[3]],[f[4],s[5]],[f[6],s[7]],
     [f[8],s[9]],[f[10],s[11]],
@@ -615,17 +660,151 @@ function renderKO() {
     grid.appendChild(card);
   });
 
-  // Back button
   document.getElementById('btn-ko-prev').style.display = koRound===0?'none':'inline-flex';
-
-  // Next button
   const allPicked = matches.every(m=>m.winner!==null);
   const btnNext = document.getElementById('btn-ko-next');
   btnNext.disabled = !allPicked;
   const isLast = koRound===KO_ROUNDS.length-1;
   btnNext.textContent = isLast ? 'See my Champion →' : 'Next Round →';
-
   updatePicksStat();
+}
+
+/* ═══════════════════════════════════════════════════
+   CANVAS SHARE CARD
+   9:16 portrait → perfect Instagram story format
+   800 × 1400 px internal resolution
+═══════════════════════════════════════════════════ */
+function drawShareCard(champion, koData) {
+  const canvas = document.getElementById('share-canvas');
+  const W = 800, H = 1400;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  /* ── Palette ─────────────────────────────────── */
+  const OFF_WHITE = '#FBFBFA';
+  const INK       = '#1A1A1A';
+  const INK_MID   = '#4A4A47';
+  const INK_FAINT = '#AEADA8';
+  const RULE      = '#E3E2DD';
+  const GOLD      = '#B8986A';
+  const SURFACE   = '#F4F3F0';
+
+  /* ── Background ──────────────────────────────── */
+  ctx.fillStyle = OFF_WHITE;
+  ctx.fillRect(0, 0, W, H);
+
+  /* ── Top rule ────────────────────────────────── */
+  ctx.fillStyle = INK;
+  ctx.fillRect(0, 0, W, 6);
+
+  /* ── GIDE wordmark — top left ────────────────── */
+  ctx.font = 'bold 22px "Segoe UI", system-ui, sans-serif';
+  ctx.fillStyle = INK;
+  ctx.letterSpacing = '0.2em';
+  ctx.fillText('GIDE', 52, 72);
+
+  /* ── Year badge — top right ──────────────────── */
+  ctx.font = 'bold 14px "Segoe UI", system-ui, sans-serif';
+  ctx.fillStyle = INK_FAINT;
+  ctx.textAlign = 'right';
+  ctx.fillText('WORLD CUP 2026', W - 52, 72);
+  ctx.textAlign = 'left';
+
+  /* ── Divider under header ────────────────────── */
+  ctx.strokeStyle = RULE;
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(52, 96); ctx.lineTo(W - 52, 96); ctx.stroke();
+
+  /* ── "MY PICK" label ─────────────────────────── */
+  ctx.font = 'bold 13px "Segoe UI", system-ui, sans-serif';
+  ctx.fillStyle = INK_FAINT;
+  ctx.fillText('MY PICK', 52, 160);
+
+  /* ── Champion flag (emoji) ───────────────────── */
+  ctx.font = '160px serif';
+  ctx.fillText(champion.f, W/2 - 88, 400);
+
+  /* ── Champion name ───────────────────────────── */
+  ctx.font = 'bold 88px "Segoe UI", system-ui, sans-serif';
+  ctx.fillStyle = GOLD;
+  ctx.textAlign = 'center';
+  // Break long names onto two lines
+  const words = champion.n.split(' ');
+  if (words.length > 1 && ctx.measureText(champion.n).width > W - 104) {
+    const mid = Math.ceil(words.length / 2);
+    ctx.fillText(words.slice(0, mid).join(' '), W/2, 500);
+    ctx.fillText(words.slice(mid).join(' '),    W/2, 600);
+  } else {
+    ctx.fillText(champion.n, W/2, 540);
+  }
+
+  /* ── Trophy ──────────────────────────────────── */
+  ctx.font = '52px serif';
+  ctx.fillText('🏆', W/2, 660);
+  ctx.textAlign = 'left';
+
+  /* ── My Path divider ─────────────────────────── */
+  ctx.strokeStyle = RULE;
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(52, 710); ctx.lineTo(W - 52, 710); ctx.stroke();
+
+  ctx.font = 'bold 13px "Segoe UI", system-ui, sans-serif';
+  ctx.fillStyle = INK_FAINT;
+  ctx.fillText('MY PATH TO THE FINAL', 52, 748);
+
+  /* ── Round-by-round summary ──────────────────── */
+  const roundLabels = ['R32 winners', 'R16 winners', 'QF winners', 'SF winners', 'Final winner'];
+  let y = 792;
+  const lineH = 44;
+
+  koData.forEach((round, ri) => {
+    const winners = round.map(m => teamByKey(m.winner)).filter(Boolean);
+    if (!winners.length) return;
+
+    /* Row background alternating */
+    if (ri % 2 === 0) {
+      ctx.fillStyle = SURFACE;
+      ctx.fillRect(52, y - 22, W - 104, lineH - 2);
+    }
+
+    /* Round label */
+    ctx.font = 'bold 11px "Segoe UI", system-ui, sans-serif';
+    ctx.fillStyle = INK_FAINT;
+    ctx.fillText(roundLabels[ri] || `Round ${ri+1}`, 64, y);
+
+    /* Winner flags */
+    ctx.font = '22px serif';
+    let fx = 64 + 120;
+    winners.forEach(t => {
+      if (fx + 32 > W - 52) return; // overflow guard
+      ctx.fillText(t.f, fx, y + 2);
+      fx += 34;
+    });
+
+    y += lineH;
+  });
+
+  /* ── Bottom rule ─────────────────────────────── */
+  ctx.strokeStyle = RULE;
+  ctx.lineWidth = 1;
+  const botRuleY = H - 120;
+  ctx.beginPath(); ctx.moveTo(52, botRuleY); ctx.lineTo(W - 52, botRuleY); ctx.stroke();
+
+  /* ── URL / CTA ───────────────────────────────── */
+  ctx.font = 'bold 14px "Segoe UI", system-ui, sans-serif';
+  ctx.fillStyle = INK_FAINT;
+  ctx.textAlign = 'center';
+  ctx.fillText('Make your pick → gideobjects.com/worldcup.html', W/2, H - 72);
+  ctx.textAlign = 'left';
+
+  /* ── Bottom accent bar ───────────────────────── */
+  ctx.fillStyle = INK;
+  ctx.fillRect(0, H - 6, W, 6);
+
+  /* ── Wire up download button ─────────────────── */
+  const dlBtn = document.getElementById('btn-download');
+  dlBtn.href = canvas.toDataURL('image/png');
+  dlBtn.download = `gide-worldcup-2026-${champion.k}.png`;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -634,33 +813,21 @@ function renderKO() {
 function showChampion() {
   const winner = ko[koRound][0].winner;
   const t = teamByKey(winner);
-  if(!t) return;
+  if (!t) return;
 
-  document.getElementById('predictor').style.display='none';
+  document.getElementById('predictor').style.display = 'none';
   document.getElementById('champion-screen').classList.add('visible');
 
   document.getElementById('c-flag').textContent = t.f;
   document.getElementById('c-name').textContent = t.n;
 
-  // Summary
-  const labels=['R32','R16','QF','SF','Final'];
-  let html=`<div><strong>Group winners you picked:</strong><br>`;
-  html += GROUPS.map(g=>{ const tw=teamByKey(groupOrder[g.id][0]); return tw?tw.f+' '+tw.n:'?'; }).join(', ');
-  html += '</div>';
-  ko.forEach((r,ri)=>{
-    const ws=r.map(m=>{ const tw=teamByKey(m.winner); return tw?tw.f+' '+tw.n:'?'; }).join(', ');
-    html+=`<div style="margin-top:.4rem"><strong>${labels[ri]||'R'+(ri+1)}:</strong> ${ws}</div>`;
+  // Draw canvas after a short delay so the screen has painted
+  requestAnimationFrame(() => {
+    setTimeout(() => drawShareCard(t, ko), 80);
   });
-  document.getElementById('c-summary').innerHTML=html;
 }
 
-document.getElementById('btn-share').addEventListener('click',()=>{
-  const winner=ko[koRound]?.[0]?.winner;
-  const t=teamByKey(winner);
-  const text=`${t?.f||'🏆'} I picked ${t?.n||'my team'} to win the 2026 FIFA World Cup!\n\nMake your prediction → gideobjects.com/worldcup.html`;
-  if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>{ const b=document.getElementById('btn-share'); b.textContent='Copied ✓'; setTimeout(()=>b.textContent='Copy to share',2000); });
-});
-
+/* ── Restart ──────────────────────────────────── */
 document.getElementById('btn-restart').addEventListener('click',()=>{
   document.getElementById('champion-screen').classList.remove('visible');
   document.getElementById('predictor').style.display='block';
