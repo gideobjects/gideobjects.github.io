@@ -32,10 +32,10 @@
   <main>
 
     <div class="container">
-      <header class="objects-header">
-        <p class="eyebrow" style="margin-bottom:.5rem;">GIDE — Physical</p>
-        <h1 class="objects-header__title">Objects.</h1>
-        <p class="objects-header__desc">
+      <header class="tools-header">
+        <p class="eyebrow eyebrow--objects">GIDE physical</p>
+        <h1 class="tools-header__title">Objects.</h1>
+        <p class="tools-header__desc">
           A numbered index of objects released by the studio. Each one documented
           from first sketch through production — geometry, material, process, and intent.
         </p>
@@ -43,45 +43,36 @@
     </div>
 
     <div class="container">
-      <div class="objects-grid">
+      <div class="tools-full-grid">
 
-        <!-- Object 001 — GIDE Mount -->
-        <article class="object-card">
-          <div class="img-slot">
+        <!-- ── Object 001: GIDE Mount ── -->
+        <article class="tool-full-card">
+          <div class="tool-full-card__visual">
             <img src="img/001-mount/profile.png" alt="GIDE Mount — Object 001" loading="lazy" />
           </div>
-          <div class="object-card__body">
-            <p class="object-card__id">Object 001</p>
-            <h2 class="object-card__title">GIDE Mount</h2>
-            <p class="object-card__desc">
-              A wall-mounted display hook engineered for jerseys and everyday hangers.
-              Geometry derived from load requirements. Finish chosen for how it ages,
-              not how it photographs.
+          <div class="tool-full-card__body">
+            <p class="tool-full-card__cat">Object 001 // Wall Anchor</p>
+            <h2 class="tool-full-card__name">GIDE Mount</h2>
+            <p class="tool-full-card__desc">
+              A wall-mounted display hook engineered for jerseys and everyday garments.
+              Geometry derived from strict structural load requirements. Finish chosen for how it tactilely ages over time, not how it photographs.
             </p>
-            <div class="object-card__footer">
-              <span class="status-badge status-badge--available">Available</span>
-              <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">
-                <a href="object-001.html" class="text-link">Case Study →</a>
-                <a href="shop.html" class="btn btn--sm">Buy on Etsy</a>
-              </div>
-            </div>
-          </div>
-        </article>
 
-        <!-- Object 002 — Placeholder -->
-        <article class="object-card" style="opacity:.5;">
-          <div class="img-slot" style="background:var(--bg-surface);">
-            <span style="font-size:var(--txs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);">In development</span>
-          </div>
-          <div class="object-card__body">
-            <p class="object-card__id">Object 002</p>
-            <h2 class="object-card__title">Undisclosed</h2>
-            <p class="object-card__desc">
-              Under engineering review. Follows the same discipline as Object 001 —
-              form derived from function, material chosen for properties first.
-            </p>
-            <div class="object-card__footer">
-              <span class="status-badge">In Development</span>
+            <!-- Technical Specifications -->
+            <div class="card-section-divider">
+              <ul class="intent-features">
+                <li><strong>Load Optimization:</strong> Generous surface contact base to minimize drywall shear stress.</li>
+                <li><strong>Material Truth:</strong> Zero artificial surface coatings. Pure unvarnished grain and raw material properties.</li>
+                <li><strong>Complete Documentation:</strong> Package contains structural stress breakdown and install templates.</li>
+              </ul>
+            </div>
+
+            <div class="tool-full-card__footer">
+              <span class="tool-full-card__status tool-full-card__status--live">● Available</span>
+              <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+                <a href="object-001.html" class="btn btn--tools btn--secondary">Case Study</a>
+                <a href="shop.html" class="btn btn--tools">Buy on Etsy</a>
+              </div>
             </div>
           </div>
         </article>
@@ -133,6 +124,7 @@
             <li><a href="tools.html">All Tools</a></li>
             <li><a href="worldcup.html">World Cup 2026</a></li>
             <li><a href="tools.html#intentlink">IntentLink v2</a></li>
+            <li><a href="focus.html">GIDE Focus</a></li>
           </ul>
         </div>
         <div>
